@@ -26,6 +26,16 @@ class StudiesTableTest extends TestCase
     public $fixtures = [
         'app.studies',
         'app.rounds',
+        'app.questions_indicators',
+        'app.questions',
+        'app.indicators',
+        'app.rounds_questions_indicators',
+        'app.answers',
+        'app.values',
+        'app.answers_values',
+        'app.previews',
+        'app.previews_values',
+        'app.rounds_questions_indicators_values',
         'app.users',
         'app.users_studies'
     ];

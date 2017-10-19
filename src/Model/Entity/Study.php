@@ -10,6 +10,8 @@ use Cake\ORM\Entity;
  * @property string $description
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $completed
+ * @property string $category
+ * @property int $scenario
  *
  * @property \App\Model\Entity\Round[] $rounds
  * @property \App\Model\Entity\User[] $users
@@ -30,6 +32,8 @@ class Study extends Entity
         'description' => true,
         'created' => true,
         'completed' => true,
+        'category' => true,
+        'scenario' => true,
         'rounds' => true,
         'users' => true
     ];
