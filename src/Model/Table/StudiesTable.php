@@ -63,7 +63,6 @@ class StudiesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->scalar('description')
             ->allowEmpty('description');
 
         $validator
