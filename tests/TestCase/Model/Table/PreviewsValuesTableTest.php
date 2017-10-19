@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\RoundsTable;
+use App\Model\Table\PreviewsValuesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\RoundsTable Test Case
+ * App\Model\Table\PreviewsValuesTable Test Case
  */
-class RoundsTableTest extends TestCase
+class PreviewsValuesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\RoundsTable
+     * @var \App\Model\Table\PreviewsValuesTable
      */
-    public $Rounds;
+    public $PreviewsValues;
 
     /**
      * Fixtures
@@ -24,12 +24,20 @@ class RoundsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.previews_values',
+        'app.previews',
+        'app.values',
+        'app.answers',
+        'app.rounds_questions_indicators',
         'app.rounds',
         'app.studies',
         'app.users',
         'app.users_studies',
         'app.questions_indicators',
-        'app.rounds_questions_indicators'
+        'app.questions',
+        'app.indicators',
+        'app.rounds_questions_indicators_values',
+        'app.answers_values'
     ];
 
     /**
@@ -40,8 +48,8 @@ class RoundsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Rounds') ? [] : ['className' => RoundsTable::class];
-        $this->Rounds = TableRegistry::get('Rounds', $config);
+        $config = TableRegistry::exists('PreviewsValues') ? [] : ['className' => PreviewsValuesTable::class];
+        $this->PreviewsValues = TableRegistry::get('PreviewsValues', $config);
     }
 
     /**
@@ -51,7 +59,7 @@ class RoundsTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Rounds);
+        unset($this->PreviewsValues);
 
         parent::tearDown();
     }
