@@ -60,7 +60,7 @@ class QuestionsController extends AppController
             }
             $this->Flash->error(__('The question could not be saved. Please, try again.'));
         }
-        $indicators = $this->Questions->Indicators->find('list', ['limit' => 200]);
+        $indicators = $this->Questions->Indicators->find('list', ['keyField' => 'id', 'valueField' => 'description']);
         $this->set(compact('question', 'indicators'));
         $this->set('_serialize', ['question']);
     }

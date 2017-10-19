@@ -18,9 +18,44 @@
         <legend><?= __('Add Question') ?></legend>
         <?php
             echo $this->Form->control('description');
-            echo $this->Form->control('indicators._ids', ['options' => $indicators]);
+            echo $this->Form->control('indicator', ['type' => 'select','multiple' => true, 'id' => 'indicator-ids']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
+
+
+<script>
+
+    $(document).ready(function()
+    {
+        $('#indicator-ids').change(function(){
+            $('#indicatorsTable').detach();
+
+            var tableHtml = '<table id="indicatorsTable"><thead>' +
+                '<tr><td>Indicator</td>' +
+                '<td>Target</td>' +
+                '</tr>' +
+                '</thead>';
+            tableHtml += '<tbody>';
+
+            $('option:selected').each(function(index){
+                tableHtml += '<tr><input name="indicators['+index+'][id]" id="indicators-'+index+'-id" value="'+$(this).val()+'" type="hidden">' +
+                    '<td>'+$(this).text()+'</td>' +
+                    '<td>' +
+                    '<div class="input checkbox">' +
+                    '<input name="indicators['+index+'][_joinData][target]" value="0" type="hidden">' +
+                    '<input name="indicators['+index+'][_joinData][target]" value="1" id="indicators-'+index+'-joindata-target" type="checkbox">' +
+                    '</div>' +
+                    '</td>' +
+                    '</tr>'
+
+            });
+            tableHtml +='</tbody></div>'
+            $('fieldset').append(tableHtml);
+        });
+
+    });
+
+</script>
