@@ -13,7 +13,7 @@ use Cake\ORM\Entity;
  * @property int $study_id
  *
  * @property \App\Model\Entity\Study $study
- * @property \App\Model\Entity\QuestionsIndicator[] $questions_indicators
+ * @property \App\Model\Entity\QuestionsIndicatorsYear[] $questions_indicators_years
  */
 class Round extends Entity
 {
@@ -33,6 +33,6 @@ class Round extends Entity
         'completed' => true,
         'study_id' => true,
         'study' => true,
-        'questions_indicators' => true
+        'questions_indicators_years' => true
     ];
 }

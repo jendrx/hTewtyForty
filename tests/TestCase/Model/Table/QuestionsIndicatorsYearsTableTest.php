@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\AnswersValuesTable;
+use App\Model\Table\QuestionsIndicatorsYearsTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\AnswersValuesTable Test Case
+ * App\Model\Table\QuestionsIndicatorsYearsTable Test Case
  */
-class AnswersValuesTableTest extends TestCase
+class QuestionsIndicatorsYearsTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\AnswersValuesTable
+     * @var \App\Model\Table\QuestionsIndicatorsYearsTable
      */
-    public $AnswersValues;
+    public $QuestionsIndicatorsYears;
 
     /**
      * Fixtures
@@ -24,20 +24,16 @@ class AnswersValuesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.answers_values',
-        'app.answers',
-        'app.rounds_questions_indicators',
+        'app.questions_indicators_years',
+        'app.questions_indicators',
+        'app.questions',
+        'app.indicators',
+        'app.years',
         'app.rounds',
         'app.studies',
         'app.users',
         'app.users_studies',
-        'app.questions_indicators',
-        'app.questions',
-        'app.indicators',
-        'app.values',
-        'app.previews',
-        'app.previews_values',
-        'app.rounds_questions_indicators_values'
+        'app.rounds_questions_indicators_years'
     ];
 
     /**
@@ -48,8 +44,8 @@ class AnswersValuesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('AnswersValues') ? [] : ['className' => AnswersValuesTable::class];
-        $this->AnswersValues = TableRegistry::get('AnswersValues', $config);
+        $config = TableRegistry::exists('QuestionsIndicatorsYears') ? [] : ['className' => QuestionsIndicatorsYearsTable::class];
+        $this->QuestionsIndicatorsYears = TableRegistry::get('QuestionsIndicatorsYears', $config);
     }
 
     /**
@@ -59,7 +55,7 @@ class AnswersValuesTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->AnswersValues);
+        unset($this->QuestionsIndicatorsYears);
 
         parent::tearDown();
     }

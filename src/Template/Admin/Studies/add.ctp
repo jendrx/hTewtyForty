@@ -20,8 +20,9 @@
         <legend><?= __('Add Study') ?></legend>
         <?php
             echo $this->Form->control('description', ['type' => 'text']);
+            //echo $this->Form->control('completed');
             echo $this->Form->control('category',['options' => ['h2040' => 'Health 2040']]);
-            echo $this->Form->control('scenario',['value' => 1]);
+            echo $this->Form->control('scenario', ['value' => 1]);
             echo $this->Form->control('users._ids', ['options' => $users]);
         ?>
     </fieldset>

@@ -17,18 +17,17 @@
     <fieldset>
         <legend><?= __('Add Question') ?></legend>
         <?php
-            echo $this->Form->control('description');
-            echo $this->Form->control('indicator', ['type' => 'select','multiple' => true, 'id' => 'indicator-ids']);
+            echo $this->Form->control('description', ['type' => 'text']);
+            //echo $this->Form->control('indicator',['type' => 'select', 'multiple' => true,'id' => 'indicator-ids']);
+            //echo $this->Form->control('indicators._ids', ['options' => $indicators]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>
 
-
 <script>
-
-    $(document).ready(function()
+    /*$(document).ready(function()
     {
         $('#indicator-ids').change(function(){
             $('#indicatorsTable').detach();
@@ -56,6 +55,6 @@
             $('fieldset').append(tableHtml);
         });
 
-    });
+    });*/
 
 </script>

@@ -4,16 +4,15 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Answer Entity
+ * Year Entity
  *
  * @property int $id
  * @property \Cake\I18n\FrozenTime $created
- * @property int $round_question_indicator_id
+ * @property string $description
  *
- * @property \App\Model\Entity\RoundsQuestionsIndicator $rounds_questions_indicator
- * @property \App\Model\Entity\Value[] $values
+ * @property \App\Model\Entity\QuestionsIndicator[] $questions_indicators
  */
-class Answer extends Entity
+class Year extends Entity
 {
 
     /**
@@ -27,8 +26,7 @@ class Answer extends Entity
      */
     protected $_accessible = [
         'created' => true,
-        'round_question_indicator_id' => true,
-        'rounds_questions_indicator' => true,
-        'values' => true
+        'description' => true,
+        'questions_indicators' => true
     ];
 }

@@ -8,11 +8,10 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New Study'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('Rounds'), ['controller' => 'Rounds', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Questions'), ['controller' => 'Questions', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Indicators'), ['controller' => 'Indicators', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Values'), ['controller' => 'Values', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Rounds'), ['controller' => 'Rounds', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Round'), ['controller' => 'Rounds', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="studies index large-9 medium-8 columns content">
@@ -23,6 +22,7 @@
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('completed') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('scenario') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -32,6 +32,7 @@
                 <td><?= $this->Number->format($study->id) ?></td>
                 <td><?= h($study->created) ?></td>
                 <td><?= h($study->completed) ?></td>
+                <td><?= $this->Number->format($study->scenario) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $study->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $study->id]) ?>

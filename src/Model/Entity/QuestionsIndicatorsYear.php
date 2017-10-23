@@ -4,17 +4,17 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * AnswersValue Entity
+ * QuestionsIndicatorsYear Entity
  *
  * @property int $id
- * @property \Cake\I18n\FrozenTime $created
- * @property int $answer_id
- * @property int $value_id
+ * @property int $question_indicator_id
+ * @property int $year_id
  *
- * @property \App\Model\Entity\Value $value
- * @property \App\Model\Entity\Answer $answer
+ * @property \App\Model\Entity\QuestionsIndicator $questions_indicator
+ * @property \App\Model\Entity\Year $year
+ * @property \App\Model\Entity\Round[] $rounds
  */
-class AnswersValue extends Entity
+class QuestionsIndicatorsYear extends Entity
 {
 
     /**
@@ -27,10 +27,10 @@ class AnswersValue extends Entity
      * @var array
      */
     protected $_accessible = [
-        'created' => true,
-        'value' => true,
-        'answer_id' => true,
-        'value_id' => true,
-        'answer' => true
+        'question_indicator_id' => true,
+        'year_id' => true,
+        'questions_indicator' => true,
+        'year' => true,
+        'rounds' => true
     ];
 }

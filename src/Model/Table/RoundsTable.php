@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * Rounds Model
  *
  * @property \App\Model\Table\StudiesTable|\Cake\ORM\Association\BelongsTo $Studies
- * @property \App\Model\Table\QuestionsIndicatorsTable|\Cake\ORM\Association\BelongsToMany $QuestionsIndicators
+ * @property \App\Model\Table\QuestionsIndicatorsYearsTable|\Cake\ORM\Association\BelongsToMany $QuestionsIndicatorsYears
  *
  * @method \App\Model\Entity\Round get($primaryKey, $options = [])
  * @method \App\Model\Entity\Round newEntity($data = null, array $options = [])
@@ -44,10 +44,10 @@ class RoundsTable extends Table
         $this->belongsTo('Studies', [
             'foreignKey' => 'study_id'
         ]);
-        $this->belongsToMany('QuestionsIndicators', [
+        $this->belongsToMany('QuestionsIndicatorsYears', [
             'foreignKey' => 'round_id',
-            'targetForeignKey' => 'question_indicator_id',
-            'joinTable' => 'rounds_questions_indicators'
+            'targetForeignKey' => 'question_indicator_year_id',
+            'joinTable' => 'rounds_questions_indicators_years'
         ]);
     }
 

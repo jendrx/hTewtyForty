@@ -25,6 +25,10 @@
             <td><?= $this->Number->format($study->id) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Scenario') ?></th>
+            <td><?= $this->Number->format($study->scenario) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Created') ?></th>
             <td><?= h($study->created) ?></td>
         </tr>
@@ -36,6 +40,10 @@
     <div class="row">
         <h4><?= __('Description') ?></h4>
         <?= $this->Text->autoParagraph(h($study->description)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('Category') ?></h4>
+        <?= $this->Text->autoParagraph(h($study->category)); ?>
     </div>
     <div class="related">
         <h4><?= __('Related Rounds') ?></h4>

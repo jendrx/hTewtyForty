@@ -52,10 +52,11 @@ class QuestionsController extends AppController
     {
         $question = $this->Questions->newEntity();
         if ($this->request->is('post')) {
-            $question = $this->Questions->patchEntity($question, $this->request->getData());
+            $data =  $this->request->getData();
+
+            $question = $this->Questions->patchEntity($question,$data, ['associated' => ['Indicators']]);
             if ($this->Questions->save($question)) {
                 $this->Flash->success(__('The question has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The question could not be saved. Please, try again.'));
@@ -110,4 +111,20 @@ class QuestionsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+
+    public function getIndicators()
+    {
+        $response = null;
+        if($this->request->is('ajax'))
+        {
+            $params = $this->request->getQueryParams();
+            $response = $this->Questions->find('all',['conditions' => ['id' => $params['id']],'contain' => ['Indicators']])->first();
+        }
+        $this->set(compact('response'));
+        $this->set('_serialize',['response']);
+
+
+    }
+
 }

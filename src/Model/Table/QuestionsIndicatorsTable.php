@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\QuestionsTable|\Cake\ORM\Association\BelongsTo $Questions
  * @property \App\Model\Table\IndicatorsTable|\Cake\ORM\Association\BelongsTo $Indicators
- * @property \App\Model\Table\RoundsTable|\Cake\ORM\Association\BelongsToMany $Rounds
+ * @property \App\Model\Table\YearsTable|\Cake\ORM\Association\BelongsToMany $Years
  *
  * @method \App\Model\Entity\QuestionsIndicator get($primaryKey, $options = [])
  * @method \App\Model\Entity\QuestionsIndicator newEntity($data = null, array $options = [])
@@ -44,10 +44,10 @@ class QuestionsIndicatorsTable extends Table
         $this->belongsTo('Indicators', [
             'foreignKey' => 'indicator_id'
         ]);
-        $this->belongsToMany('Rounds', [
+        $this->belongsToMany('Years', [
             'foreignKey' => 'question_indicator_id',
-            'targetForeignKey' => 'round_id',
-            'joinTable' => 'rounds_questions_indicators'
+            'targetForeignKey' => 'year_id',
+            'joinTable' => 'questions_indicators_years'
         ]);
     }
 

@@ -60,6 +60,7 @@ class IndicatorsController extends AppController
             }
             $this->Flash->error(__('The indicator could not be saved. Please, try again.'));
         }
+        $questions = $this->Indicators->Questions->find('list', ['limit' => 200]);
         $this->set(compact('indicator', 'questions'));
         $this->set('_serialize', ['indicator']);
     }
