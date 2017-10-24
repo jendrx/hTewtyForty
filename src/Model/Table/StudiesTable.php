@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -63,7 +64,6 @@ class StudiesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->scalar('description')
             ->allowEmpty('description');
 
         $validator
@@ -71,7 +71,6 @@ class StudiesTable extends Table
             ->allowEmpty('completed');
 
         $validator
-            ->scalar('category')
             ->requirePresence('category', 'create')
             ->notEmpty('category');
 
@@ -80,5 +79,20 @@ class StudiesTable extends Table
             ->notEmpty('scenario');
 
         return $validator;
+    }
+
+
+    public function getActiveRound($study_id = null)
+    {
+        $round = $this->Rounds->find('all', ['conditions' => ['study_id' => $study_id, 'Rounds.completed is null'], 'order' => ['id' => 'ASC']])->first();
+
+        if(empty($round))
+        {
+            throw new RecordNotFoundException('Round not found');
+        }
+
+        return $round;
+
+
     }
 }

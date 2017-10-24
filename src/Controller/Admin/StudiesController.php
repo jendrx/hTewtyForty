@@ -52,7 +52,9 @@ class StudiesController extends AppController
     {
         $study = $this->Studies->newEntity();
         if ($this->request->is('post')) {
-            $study = $this->Studies->patchEntity($study, $this->request->getData());
+            $data = $this->request->getData();
+            debug($data);
+            $study = $this->Studies->patchEntity($study, $data,['associated' => ['Users','Rounds','Rounds.QuestionsIndicatorsYears']]);
             if ($this->Studies->save($study)) {
                 $this->Flash->success(__('The study has been saved.'));
 
@@ -61,8 +63,9 @@ class StudiesController extends AppController
             $this->Flash->error(__('The study could not be saved. Please, try again.'));
         }
         $users = $this->Studies->Users->find('list',['keyField' => 'id', 'valueField' => 'username']);
-        $this->set(compact('study', 'users'));
-        $this->set('_serialize', ['study']);
+        $questions = $this->Studies->Rounds->QuestionsIndicatorsYears->QuestionsIndicators->Questions->find('list',['keyField' => 'id','valueField' => 'description']);
+        $this->set(compact('study', 'users','questions','questions_indicators_values'));
+        $this->set('_serialize', ['study','questions','questions_indicators_values']);
     }
 
     /**

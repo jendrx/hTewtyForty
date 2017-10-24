@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -85,5 +86,20 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['username']));
 
         return $rules;
+    }
+
+    public function getActiveStudy($id = null)
+    {
+        $study_id = $this->Studies->find('all',['conditions' => 'Studies.completed is null', 'order' => ['Studies.id' => 'ASC']])->matching('Users', function($q) use($id){
+            return $q->where(['Users.id' => $id]);
+        })->first();
+
+
+        if(empty($study_id))
+        {
+            throw new RecordNotFoundException(__('Study not found'));
+        }
+
+        return $study_id;
     }
 }

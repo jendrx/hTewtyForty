@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 
 class UsersController extends AppController
@@ -46,6 +47,8 @@ class UsersController extends AppController
             if($user)
             {
                 $this->Auth->setUser($user);
+
+                return $this->redirect(['action' => 'getActiveStudy']);
             }
             else
             {
@@ -59,6 +62,22 @@ class UsersController extends AppController
 
         return $this->redirect($this->Auth->logout());
 
+    }
+
+
+    public function getActiveStudy()
+    {
+        $user_id = $this->Auth->user('id');
+
+        $study = null;
+        try{
+            $study = $this->Users->getActiveStudy($user_id);
+        }catch( RecordNotFoundException $e)
+        {
+            $this->Flash->error($e);
+        }
+
+        return $this->redirect(['controller' => 'Studies', 'action' => 'view', $study['id']]);
     }
 
 }

@@ -39,7 +39,7 @@ class RoundsController extends AppController
     public function view($id = null)
     {
         $round = $this->Rounds->get($id, [
-            'contain' => ['Studies', 'QuestionsIndicators']
+            'contain' => ['Studies', 'QuestionsIndicatorsYears']
         ]);
 
         $this->set('round', $round);
@@ -64,8 +64,8 @@ class RoundsController extends AppController
             $this->Flash->error(__('The round could not be saved. Please, try again.'));
         }
         $studies = $this->Rounds->Studies->find('list', ['limit' => 200]);
-        $questionsIndicators = $this->Rounds->QuestionsIndicators->find('list', ['limit' => 200]);
-        $this->set(compact('round', 'studies', 'questionsIndicators'));
+        $questionsIndicatorsYears = $this->Rounds->QuestionsIndicatorsYears->find('list', ['limit' => 200]);
+        $this->set(compact('round', 'studies', 'questionsIndicatorsYears'));
         $this->set('_serialize', ['round']);
     }
 
@@ -79,7 +79,7 @@ class RoundsController extends AppController
     public function edit($id = null)
     {
         $round = $this->Rounds->get($id, [
-            'contain' => ['QuestionsIndicators']
+            'contain' => ['QuestionsIndicatorsYears']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $round = $this->Rounds->patchEntity($round, $this->request->getData());
@@ -91,8 +91,8 @@ class RoundsController extends AppController
             $this->Flash->error(__('The round could not be saved. Please, try again.'));
         }
         $studies = $this->Rounds->Studies->find('list', ['limit' => 200]);
-        $questionsIndicators = $this->Rounds->QuestionsIndicators->find('list', ['limit' => 200]);
-        $this->set(compact('round', 'studies', 'questionsIndicators'));
+        $questionsIndicatorsYears = $this->Rounds->QuestionsIndicatorsYears->find('list', ['limit' => 200]);
+        $this->set(compact('round', 'studies', 'questionsIndicatorsYears'));
         $this->set('_serialize', ['round']);
     }
 

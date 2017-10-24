@@ -49,6 +49,8 @@ class QuestionsIndicatorsTable extends Table
             'targetForeignKey' => 'year_id',
             'joinTable' => 'questions_indicators_years'
         ]);
+
+        $this->hasMany('QuestionsIndicatorsYears',['foreignKey' => 'question_indicator_id']);
     }
 
     /**

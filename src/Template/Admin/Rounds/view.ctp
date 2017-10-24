@@ -13,8 +13,8 @@
         <li><?= $this->Html->link(__('New Round'), ['action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Studies'), ['controller' => 'Studies', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Study'), ['controller' => 'Studies', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Questions Indicators'), ['controller' => 'QuestionsIndicators', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Questions Indicator'), ['controller' => 'QuestionsIndicators', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Questions Indicators Years'), ['controller' => 'QuestionsIndicatorsYears', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Questions Indicators Year'), ['controller' => 'QuestionsIndicatorsYears', 'action' => 'add']) ?> </li>
     </ul>
 </nav>
 <div class="rounds view large-9 medium-8 columns content">
@@ -42,26 +42,24 @@
         </tr>
     </table>
     <div class="related">
-        <h4><?= __('Related Questions Indicators') ?></h4>
-        <?php if (!empty($round->questions_indicators)): ?>
+        <h4><?= __('Related Questions Indicators Years') ?></h4>
+        <?php if (!empty($round->questions_indicators_years)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Question Id') ?></th>
-                <th scope="col"><?= __('Indicator Id') ?></th>
-                <th scope="col"><?= __('Target') ?></th>
+                <th scope="col"><?= __('Question Indicator Id') ?></th>
+                <th scope="col"><?= __('Year Id') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
-            <?php foreach ($round->questions_indicators as $questionsIndicators): ?>
+            <?php foreach ($round->questions_indicators_years as $questionsIndicatorsYears): ?>
             <tr>
-                <td><?= h($questionsIndicators->id) ?></td>
-                <td><?= h($questionsIndicators->question_id) ?></td>
-                <td><?= h($questionsIndicators->indicator_id) ?></td>
-                <td><?= h($questionsIndicators->target) ?></td>
+                <td><?= h($questionsIndicatorsYears->id) ?></td>
+                <td><?= h($questionsIndicatorsYears->question_indicator_id) ?></td>
+                <td><?= h($questionsIndicatorsYears->year_id) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'QuestionsIndicators', 'action' => 'view', $questionsIndicators->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'QuestionsIndicators', 'action' => 'edit', $questionsIndicators->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'QuestionsIndicators', 'action' => 'delete', $questionsIndicators->id], ['confirm' => __('Are you sure you want to delete # {0}?', $questionsIndicators->id)]) ?>
+                    <?= $this->Html->link(__('View'), ['controller' => 'QuestionsIndicatorsYears', 'action' => 'view', $questionsIndicatorsYears->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'QuestionsIndicatorsYears', 'action' => 'edit', $questionsIndicatorsYears->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'QuestionsIndicatorsYears', 'action' => 'delete', $questionsIndicatorsYears->id], ['confirm' => __('Are you sure you want to delete # {0}?', $questionsIndicatorsYears->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

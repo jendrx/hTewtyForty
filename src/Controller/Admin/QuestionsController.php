@@ -119,7 +119,7 @@ class QuestionsController extends AppController
         if($this->request->is('ajax'))
         {
             $params = $this->request->getQueryParams();
-            $response = $this->Questions->find('all',['conditions' => ['id' => $params['id']],'contain' => ['Indicators']])->first();
+            $response = $this->Questions->find('all',['conditions' => ['id' => $params['id']], 'contain' => ['QuestionsIndicators' => ['Indicators', 'Years']]])->first();
         }
         $this->set(compact('response'));
         $this->set('_serialize',['response']);
