@@ -16,7 +16,6 @@ class RoundsController extends AppController
 
     public function view( $id = null )
     {
-
         // find questions by get round by id and extract
         $round = $this->Rounds->find('all',['conditions' => ['Rounds.id' => $id],'contain' => ['Studies','QuestionsIndicatorsYears.QuestionsIndicators.Questions']]);
         $collection = new Collection($round);

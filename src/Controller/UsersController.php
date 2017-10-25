@@ -27,8 +27,10 @@ class UsersController extends AppController
 
         if($this->request->is('post'))
         {
-            $user->set('role', 'user');
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $data = $this->request->getData();
+            $user = $this->Users->patchEntity($user, $data);
+            $user->role = 'user';
+
             if($this->Users->save($user))
             {
                 $this->Flash->success(_('User has been saved'));
@@ -36,7 +38,8 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('Unable to register the user'));
         }
-        $this->set('user',$user);
+        $this->set(compact('user'));
+        $this->set('_serialize',['user']);
     }
 
     public function login()
@@ -70,6 +73,7 @@ class UsersController extends AppController
         $user_id = $this->Auth->user('id');
 
         $study = null;
+
         try{
             $study = $this->Users->getActiveStudy($user_id);
         }catch( RecordNotFoundException $e)
@@ -77,7 +81,8 @@ class UsersController extends AppController
             $this->Flash->error($e);
         }
 
-        return $this->redirect(['controller' => 'Studies', 'action' => 'view', $study['id']]);
+        if($study)
+            return $this->redirect(['controller' => 'Studies', 'action' => 'view', $study['id']]);
     }
 
 }
