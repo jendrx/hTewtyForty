@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+use Cake\I18n\Time;
 
 /**
  * Rounds Controller
@@ -115,4 +116,21 @@ class RoundsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function finish($id = null)
+    {
+        $this->request->allowMethod('post');
+        $round = $this->Rounds->get($id);
+
+        $round->completed = Time::now();
+
+        if($this->Rounds->save($round))
+        {
+            $this->Flash->success(__('The round has been finished'));
+        } else {
+            $this->Flash->error(__('The round could not be finished'));
+        }
+        return $this->redirect(['controller' => 'Studies', 'action' => 'view',  $round->study_id]);
+    }
+
 }

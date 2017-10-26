@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+use Cake\I18n\Time;
 
 /**
  * Studies Controller
@@ -112,5 +113,27 @@ class StudiesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+
+    public function finish($id = null)
+    {
+        $this->request->allowMethod('post');
+        $study = $this->Studies->get($id);
+
+        $study->completed = Time::now();
+
+        if($this->Studies->save($study))
+        {
+            $this->Flash->success(__('The study has been finished '));
+        } else {
+            $this->Flash->error(__('The study could not be finished'. 'Please, try again'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+
+
+
+
     }
 }

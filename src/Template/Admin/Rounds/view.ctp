@@ -66,4 +66,10 @@
         </table>
         <?php endif; ?>
     </div>
+
+    <?php
+        if(!$round->has('completed')):
+            echo $this->Form->postLink(__('Finish Round'), ['controller' => 'Rounds', 'action' => 'finish', $round->id], ['confirm' => __('Are you sure you want to finish round # {0}?', $round->step)]);
+        endif;
+    ?>
 </div>
