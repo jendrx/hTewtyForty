@@ -43,6 +43,8 @@ class RoundsQuestionsIndicatorsYearsTable extends Table
         $this->belongsTo('QuestionsIndicatorsYears', [
             'foreignKey' => 'question_indicator_year_id'
         ]);
+
+        $this->hasMany('Answers',['foreignKey' => 'round_question_indicator_year_id']);
     }
 
     /**

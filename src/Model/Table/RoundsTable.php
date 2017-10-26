@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\Collection\Collection;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -86,4 +87,25 @@ class RoundsTable extends Table
 
         return $rules;
     }
+
+    public function getRoundMean($round_id = null)
+    {
+
+        /*$answers = $this->RoundsQuestionsIndicatorsYears->Answers->find()->matching('RoundsQuestionsIndicatorsYears', function($q) use($round_id){
+            return $q->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id]);
+    })->select(['round_question_indicator_year_id','value' => $answers->func()->avg('answers.value')])->group(['round_question_indicator_year_id']);*/
+
+
+        $answers  = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) {
+            return $q->select(['round_question_indicator_year_id','value' => $q->func()->avg('value')])->group('round_question_indicator_year_id');
+        }, 'QuestionsIndicatorsYears' =>[ 'Years', 'QuestionsIndicators' => ['Indicators']]]])
+            ->select(['id','years.description','years.id','indicators.id','indicators.description'])
+            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->groupBy('indicators.description');
+
+
+
+        return $answers;
+    }
+
+
 }
