@@ -131,9 +131,40 @@ class StudiesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
-
-
-
-
     }
+
+
+    /*public function addRound($id = null)
+    {
+        $lastRound = $this->Studies->getLastRound($id);
+        if(!$lastRound->completed)
+        {
+            $this->Flash->error(__('Last Round has not been finished'));
+            return $this->redirect(['action' => 'view', $lastRound->study_id]);
+        }
+
+        $round = $this->Studies->Rounds->newEntity();
+
+        $study_id = $id;
+        $step = $lastRound->step + 1;
+        $roundMean = $this->Studies->Rounds->getRoundMean($lastRound->id);
+
+
+        if($this->request->is('post'))
+        {
+            $data = $this->request->getData();
+            $round = $this->Studies->Rounds->patchEntity($round,$data);
+
+            if($this->Studies->Rounds->save($round))
+            {
+                $this->Flash->success(__('The round has been saved'));
+                return $this->redirect(['action' => 'view', $id]);
+            }
+            $this->Flash->error(__('The round could not be saved'));
+        }
+
+
+        $this->set(compact('roundMean','step','round','study_id'));
+        $this->set('_serialize',['roundMean','step','round','study_id']);
+    }*/
 }

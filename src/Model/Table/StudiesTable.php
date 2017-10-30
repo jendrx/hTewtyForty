@@ -92,7 +92,17 @@ class StudiesTable extends Table
         }
 
         return $round;
+    }
 
+    public function hasRounds($id = null)
+    {
+
+        return $this->Rounds->exists(['study_id' => $id]);
+    }
+
+    public function getLastRound($id = null)
+    {
+        return $this->Rounds->find('all', ['conditions' => ['study_id' => $id], 'order' => ['Rounds.id' => 'DESC']])->first();
 
     }
 }

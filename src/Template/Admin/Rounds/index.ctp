@@ -8,10 +8,10 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New Round'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Studies'), ['controller' => 'Studies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Study'), ['controller' => 'Studies', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Questions Indicators Years'), ['controller' => 'QuestionsIndicatorsYears', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Questions Indicators Year'), ['controller' => 'QuestionsIndicatorsYears', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Studies'), ['controller' => 'Studies', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Questions'), ['controller' => 'Questions', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Indicators'), ['controller' => 'Users', 'Indicators' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="rounds index large-9 medium-8 columns content">

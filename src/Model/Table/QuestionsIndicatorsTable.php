@@ -64,6 +64,11 @@ class QuestionsIndicatorsTable extends Table
         $validator
             ->allowEmpty('id', 'create');
 
+
+        $validator
+            ->boolean('ratio')
+            ->allowEmpty('ratio');
+
         $validator
             ->boolean('target')
             ->allowEmpty('target');

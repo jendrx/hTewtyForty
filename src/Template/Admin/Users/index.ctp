@@ -8,11 +8,10 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('Studies'), ['controller' => 'Studies', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Studies'), ['controller' => 'Studies','action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('Rounds'), ['controller' => 'Rounds', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('Questions'), ['controller' => 'Questions', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Indicators'), ['controller' => 'Indicators', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Values'), ['controller' => 'Values', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Indicators'), ['controller' => 'Users', 'Indicators' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="users index large-9 medium-8 columns content">

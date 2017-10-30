@@ -2,6 +2,7 @@
 namespace App\Model\Table;
 
 use Cake\Collection\Collection;
+use Cake\Collection\CollectionInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -50,6 +51,8 @@ class RoundsTable extends Table
             'targetForeignKey' => 'question_indicator_year_id',
             'joinTable' => 'rounds_questions_indicators_years'
         ]);
+
+        $this->hasMany('RoundsQuestionsIndicatorsYears',['foreignKey' => 'round_id']);
     }
 
     /**
@@ -90,22 +93,38 @@ class RoundsTable extends Table
 
     public function getRoundMean($round_id = null)
     {
-
-        /*$answers = $this->RoundsQuestionsIndicatorsYears->Answers->find()->matching('RoundsQuestionsIndicatorsYears', function($q) use($round_id){
-            return $q->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id]);
-    })->select(['round_question_indicator_year_id','value' => $answers->func()->avg('answers.value')])->group(['round_question_indicator_year_id']);*/
+       /* $answers  = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) {
+            return $q->select(['round_question_indicator_year_id','value' => $q->func()->avg('value')])->group('round_question_indicator_year_id');
+        }, 'QuestionsIndicatorsYears' =>[ 'Years', 'QuestionsIndicators' => ['Indicators']]]])
+            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])
+            ->select(['id','questionsindicatorsyears.id','years.description','indicators.id','indicators.description'])->formatResults(function($q){
+                 return $q->map(function($results){
+                    return $results->indicators;
+                });
+            });*/
 
 
         $answers  = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) {
             return $q->select(['round_question_indicator_year_id','value' => $q->func()->avg('value')])->group('round_question_indicator_year_id');
         }, 'QuestionsIndicatorsYears' =>[ 'Years', 'QuestionsIndicators' => ['Indicators']]]])
-            ->select(['id','years.description','years.id','indicators.id','indicators.description'])
-            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->groupBy('indicators.description');
+            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])
+            ->select(['id','questionsindicatorsyears.id','years.description','indicators.id','indicators.description'])
+            ->formatResults(function($q){
+
+                $collection = new collection($q);
+                $indicators = array_unique($collection->extract('indicators')->toArray(),SORT_REGULAR);
+
+
+                return $indicators ;
+            });
+
 
 
 
         return $answers;
     }
+
+    /*->select(['id','questionsindicatorsyears.id','years.description','indicators.id','indicators.description'])*/
 
 
 }
