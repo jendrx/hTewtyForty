@@ -1,10 +1,5 @@
+
 <?php
-/**
- * Created by PhpStorm.
- * User: rom
- * Date: 10/30/17
- * Time: 2:24 PM
- */
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -50,7 +45,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </ul>
     <div class="top-bar-section">
         <ul class="right">
-            <?php echo $this->Html->link(__('Logout'),['controller' => 'Users', 'action' => 'logout']);?>
         </ul>
     </div>
 </nav>

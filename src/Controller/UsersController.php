@@ -44,6 +44,8 @@ class UsersController extends AppController
 
     public function login()
     {
+
+        $this->viewBuilder()->setLayout('unlogged');
         if($this->request->is('post'))
         {
             $user = $this->Auth->identify();
@@ -62,7 +64,7 @@ class UsersController extends AppController
 
     public function logout()
     {
-
+        $this->viewBuilder()->setLayout('unlogged');
         return $this->redirect($this->Auth->logout());
 
     }
