@@ -10,7 +10,7 @@
         <li><?= $this->Html->link(__('New Question'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('Studies'), ['controller' => 'Studies', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('Rounds'), ['controller' => 'Rounds','action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Indicators'), ['controller' => 'Users', 'Indicators' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Indicators'), ['controller' => 'Indicators', 'Indicators' => 'index']) ?></li>
         <li><?= $this->Html->link(__('Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
     </ul>
 </nav>

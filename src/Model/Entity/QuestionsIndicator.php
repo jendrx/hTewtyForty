@@ -10,10 +10,12 @@ use Cake\ORM\Entity;
  * @property int $question_id
  * @property int $indicator_id
  * @property bool $target
+ * @property bool $ratio
  *
  * @property \App\Model\Entity\Question $question
  * @property \App\Model\Entity\Indicator $indicator
  * @property \App\Model\Entity\Year[] $years
+ * @property \App\Model\Entity\QuestionsIndicatorsYear[] $questions_indicators_years
  */
 class QuestionsIndicator extends Entity
 {
@@ -31,8 +33,10 @@ class QuestionsIndicator extends Entity
         'question_id' => true,
         'indicator_id' => true,
         'target' => true,
+        'ratio' => true,
         'question' => true,
         'indicator' => true,
-        'years' => true
+        'years' => true,
+        'questions_indicators_years' => true
     ];
 }

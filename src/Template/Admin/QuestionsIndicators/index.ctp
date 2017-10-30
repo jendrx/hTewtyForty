@@ -8,12 +8,11 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New Questions Indicator'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Questions'), ['controller' => 'Questions', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Question'), ['controller' => 'Questions', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Indicators'), ['controller' => 'Indicators', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Indicator'), ['controller' => 'Indicators', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Years'), ['controller' => 'Years', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Year'), ['controller' => 'Years', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Studies'), ['controller' => 'Studies', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Rounds'), ['controller' => 'Rounds','action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('Questions'), ['controller' => 'Questions', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Indicators'), ['controller' => 'Indicators', 'Indicators' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
     </ul>
 </nav>
 <div class="questionsIndicators index large-9 medium-8 columns content">
@@ -25,6 +24,7 @@
                 <th scope="col"><?= $this->Paginator->sort('question_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('indicator_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('target') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('ratio') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -35,6 +35,7 @@
                 <td><?= $questionsIndicator->has('question') ? $this->Html->link($questionsIndicator->question->id, ['controller' => 'Questions', 'action' => 'view', $questionsIndicator->question->id]) : '' ?></td>
                 <td><?= $questionsIndicator->has('indicator') ? $this->Html->link($questionsIndicator->indicator->id, ['controller' => 'Indicators', 'action' => 'view', $questionsIndicator->indicator->id]) : '' ?></td>
                 <td><?= h($questionsIndicator->target) ?></td>
+                <td><?= h($questionsIndicator->ratio)?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $questionsIndicator->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $questionsIndicator->id]) ?>

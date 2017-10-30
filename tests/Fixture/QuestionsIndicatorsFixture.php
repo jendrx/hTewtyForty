@@ -21,6 +21,7 @@ class QuestionsIndicatorsFixture extends TestFixture
         'question_id' => ['type' => 'biginteger', 'length' => 20, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'indicator_id' => ['type' => 'biginteger', 'length' => 20, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'target' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
+        'ratio' => ['type' => 'boolean', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
             'questions_indicators_indicator_id_fkey' => ['type' => 'foreign', 'columns' => ['indicator_id'], 'references' => ['indicators', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
@@ -39,7 +40,8 @@ class QuestionsIndicatorsFixture extends TestFixture
             'id' => 1,
             'question_id' => 1,
             'indicator_id' => 1,
-            'target' => 1
+            'target' => 1,
+            'ratio' => 1
         ],
     ];
 }

@@ -33,7 +33,8 @@ class QuestionsIndicatorsTableTest extends TestCase
         'app.studies',
         'app.users',
         'app.users_studies',
-        'app.rounds_questions_indicators_years'
+        'app.rounds_questions_indicators_years',
+        'app.answers'
     ];
 
     /**

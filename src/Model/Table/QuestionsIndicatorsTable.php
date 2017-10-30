@@ -49,8 +49,6 @@ class QuestionsIndicatorsTable extends Table
             'targetForeignKey' => 'year_id',
             'joinTable' => 'questions_indicators_years'
         ]);
-
-        $this->hasMany('QuestionsIndicatorsYears',['foreignKey' => 'question_indicator_id']);
     }
 
     /**
@@ -64,14 +62,13 @@ class QuestionsIndicatorsTable extends Table
         $validator
             ->allowEmpty('id', 'create');
 
+        $validator
+            ->boolean('target')
+            ->allowEmpty('target');
 
         $validator
             ->boolean('ratio')
             ->allowEmpty('ratio');
-
-        $validator
-            ->boolean('target')
-            ->allowEmpty('target');
 
         return $validator;
     }
