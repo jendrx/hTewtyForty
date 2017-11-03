@@ -62,7 +62,8 @@ class AnswersTable extends Table
 
         $validator
             ->numeric('value')
-            ->allowEmpty('value');
+            ->greaterThan('value',0)
+            ->notEmpty('value');
 
         return $validator;
     }

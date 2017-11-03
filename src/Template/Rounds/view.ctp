@@ -6,18 +6,19 @@
  * Time: 11:05 AM
  */?>
 
-<div class="row">
-    <div class="large-12 columns ">
+<div id="div-round-view-content" class="row">
+    <div class="large-12 columns content">
 
         <?php foreach( $questions as $question):
 
-            echo '<div class="row content">';
+            echo '<div class="row">';
                 echo '<h3>'.$question->description.'</h3>';
                 echo '<div class="large-12 columns">';
                 echo '<div class="row">';
                 echo '<div class="large-6 columns">';
 
-                echo $this->Form->create(null,['url' => ['controller' => 'answers', 'action' => 'add']]);
+
+                echo $this->Form->create(null,[ 'url' => ['controller' => 'answers', 'action' => 'add'],'id' => 'form-round']);
 
                 $index = 0;
                     foreach($question['questions_indicators'] as $question_indicator):
@@ -78,7 +79,7 @@
                 echo '</div>';
 
 
-                echo $this->Form->Button(__('Submit'),['class' => ['button tiny right']]);
+                echo $this->Form->Button(__('Submit'),['class' => ['button tiny right'],'id' => 'btn-submit']);
                 echo $this->Form->end();
 
                 echo '</div>';
@@ -90,5 +91,47 @@
 
 
 <script>
+
+    function objectifyForm(formArray)
+    {
+        var objectified = {};
+
+        for(i = 0,length = formArray.length; i < length; i++)
+        {
+            objectified[formArray[i]['name']] = formArray[i]['value'];
+        }
+        return objectified;
+    }
+
+    function validate(data)
+    {
+        $.ajax({
+        type: 'POST',
+        url: '/rounds/validate',
+        dataType: 'json',
+        data: data,
+        success: function (data)
+        {
+            if(!data.response)
+            {
+                $('#div-round-view-content').prepend('<div class="error message", onclick="this.classList.add(\'hidden\')"> Values inserted does not match</div>')
+            }else
+            {
+                $('#form-round').submit();
+            }
+        }
+        });
+    }
+
+
+    $(document).ready(function()
+    {
+       $('#btn-submit').click(function(event)
+       {
+           event.preventDefault();
+           validate(objectifyForm($('#form-round').serializeArray()));
+
+       });
+    });
 // get loaded charts
 </script>

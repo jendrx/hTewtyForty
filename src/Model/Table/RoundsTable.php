@@ -115,16 +115,38 @@ class RoundsTable extends Table
                 $indicators = array_unique($collection->extract('indicators')->toArray(),SORT_REGULAR);
 
 
-                return $indicators ;
+                return $indicators;
             });
-
-
-
-
         return $answers;
     }
 
     /*->select(['id','questionsindicatorsyears.id','years.description','indicators.id','indicators.description'])*/
+
+
+
+    public function getAnswers($round_id = null)
+    {
+
+        $answers = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) {
+         return $q->select(['round_question_indicator_year_id','value','user_id'])->group(['round_question_indicator_year_id','value','user_id']);
+        }, 'QuestionsIndicatorsYears' => ['Years' => ['fields' => ['id', 'description']], 'QuestionsIndicators.Indicators' => ['fields' => ['id','description']]]]])->formatResults( function($q)
+        {
+            $collection = new collection($q);
+
+            $years = array_unique($collection->extract('questions_indicators_year.year')->toArray(),SORT_REGULAR);
+
+            /*foreach ($years as &$year)
+            {
+                $year['indicators'] = $collection->match(['questions_indicators_year.year_id' => $year['id']])->extract('questions_indicators_year');
+
+            }*/
+
+            //unset($collection);
+            return $q;
+        })->groupBy('questions_indicators_year.year.description');
+
+        return $answers;
+    }
 
 
 }

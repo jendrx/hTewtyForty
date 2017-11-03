@@ -25,6 +25,7 @@ class AnswersController extends AppController
             {
                 $answer->user_id = $user_id;
             }
+
             if($this->Answers->saveMany($answers))
             {
                 $this->Flash->success(__('Answer has been saved'));

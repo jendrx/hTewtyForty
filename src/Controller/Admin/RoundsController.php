@@ -43,8 +43,18 @@ class RoundsController extends AppController
             'contain' => ['Studies', 'QuestionsIndicatorsYears']
         ]);
 
-        $this->set('round', $round);
-        $this->set('_serialize', ['round']);
+        $answers = $this->Rounds->getAnswers($id);
+
+        $this->set(compact('round', 'answers'));
+        $this->set('_serialize', ['round','answers']);
+    }
+
+    public function test($id = null)
+    {
+        $answers = $this->Rounds->getAnswers($id);
+
+        $this->set(compact('answers'));
+        $this->set('_serialize', ['answers']);
     }
 
     /**
