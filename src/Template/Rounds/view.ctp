@@ -107,7 +107,7 @@
     {
         $.ajax({
         type: 'POST',
-        url: '/rounds/validate',
+        url: '/hTwentyForty/rounds/validate',
         dataType: 'json',
         data: data,
         success: function (data)

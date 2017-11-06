@@ -41,10 +41,8 @@ class RoundsController extends AppController
 
     public function validate()
     {
-        //$this->autoRender = false;
+
         $error = 0.3;
-
-
         if ($this->request->is('ajax')) {
             $response = true;
             $data = $this->request->getData();

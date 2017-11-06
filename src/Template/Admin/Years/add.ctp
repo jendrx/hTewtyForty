@@ -17,8 +17,8 @@
     <fieldset>
         <legend><?= __('Add Year') ?></legend>
         <?php
-            echo $this->Form->control('description');
-            echo $this->Form->control('questions_indicators._ids', ['options' => $questionsIndicators]);
+            echo $this->Form->control('description', ['type' => 'text']);
+            //echo $this->Form->control('questions_indicators._ids', ['options' => $questionsIndicators]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
