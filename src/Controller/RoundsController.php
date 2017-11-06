@@ -34,11 +34,8 @@ class RoundsController extends AppController
             $question['questions_indicators'] = $questionsIndicators;
         }
 
-        $result = $this->Rounds->getRoundMean($id);
-
-
-        $this->set(compact('questions', 'result'));
-        $this->set('_serialize',[ 'questions', 'result']);
+        $this->set(compact('questions'));
+        $this->set('_serialize',[ 'questions']);
 
     }
 
