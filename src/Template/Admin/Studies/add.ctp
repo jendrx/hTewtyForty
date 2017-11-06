@@ -55,7 +55,7 @@
     {
         $.ajax({
             type: "GET",
-            url: '/admin/questions/getIndicators',
+            url: '/hTwentyForty/admin/questions/getIndicators',
             dataType: 'json',
             data:{ 'id' : question_id},
             success: function (data)
