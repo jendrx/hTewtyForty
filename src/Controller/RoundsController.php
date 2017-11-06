@@ -48,7 +48,7 @@ class RoundsController extends AppController
             $data = $this->request->getData();
 
             for ($i = 0; $i < count($data) / 3; $i++) {
-                $result = $data[$i + 3]['value'] / $data[$i]['value'];
+                $result =  $data[$i]['value'] /  $data[$i + 3]['value'];
                 $max_threshold = $result + $error * $result;
                 $min_threshold = $result - $error * $result;
                 $ratio = $data[$i + 6]['value'];
