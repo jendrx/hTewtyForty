@@ -26,6 +26,7 @@ class Indicator extends Entity
      */
     protected $_accessible = [
         'description' => true,
+        'filename' => true,
         'created' => true,
         'questions' => true
     ];

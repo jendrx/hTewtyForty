@@ -5,7 +5,8 @@
  * Date: 10/24/17
  * Time: 11:05 AM
  */?>
-
+<!-- load google charts-->
+<?php  echo $this->Html->script('https://www.gstatic.com/charts/loader.js'); ?>
 <div id="div-round-view-content" class="row">
     <div class="large-12 columns content">
 
@@ -51,7 +52,7 @@
                                 endforeach;
                             endforeach;
                             echo '</div>';
-                            echo '<div id="chart-target-'.$question_indicator->indicator->description.'"></div>';
+                            echo '<div id="chart-'.$question_indicator->indicator->filename.'"></div>';
                             echo '</div>';
                         endif;
                     endforeach;
@@ -65,7 +66,7 @@
 
                             echo '<div class="row">';
                             echo '<h4>'.$question_indicator->indicator->description.'</h4>';
-                            echo '<div id="chart-target-'.$question_indicator->indicator->description.'"></div>';
+                            echo '<div id="chart-'.$question_indicator->indicator->filename.'"></div>';
                             echo '</div>';
                         endif;
 
@@ -90,7 +91,7 @@
 
 
 <script>
-
+    google.charts.load('current', {'packages':['corechart']});
 
     // functions related with chart data
     function parseChartData(data) {
@@ -119,20 +120,19 @@
         return {cols:cols,rows:rows};
     }
 
-    function getIndicatorData(study,scenario,indicator) {
+    function getIndicatorData(scenario,indicator) {
         $.ajax({
             type: "GET",
-            url: '/charts/getIndicatorData',
+            url: '/hTwentyForty/charts/getIndicatorData',
             dataType: 'json',
             data: {
-                'study' : study,
                 'scenario' : scenario,
-                'indicator' : indicator},
+                'indicator' : indicator.filename},
             success: function (data)
             {
                 console.log(data.response);
                 var chartData = parseChartData(data.response);
-                drawChart(chartData,'chart-'+indicator,indicator,'Physician');
+                drawChart(chartData,'chart-'+indicator.filename,indicator.description);
             }
         });
 
@@ -190,13 +190,29 @@
 
     $(document).ready(function()
     {
+        var round = <?php echo json_encode($round); ?>;
+        var questions = <?php echo json_encode($questions);?>;
 
 
 
+        for(i = 0,  questionsLength = questions.length; i < questionsLength; i++ ) {
+            var question = questions[i];
+
+            // loop through questions' indicators
+            for(j = 0, indicatorsLength = question.questions_indicators.length ; j < indicatorsLength; j++)
+            {
+
+                (function(cntr)
+                {
+
+                    google.charts.setOnLoadCallback(function(){
+                        getIndicatorData(round.study.scenario,question.questions_indicators[cntr].indicator);
+                    });
 
 
-
-
+                })(j);
+            }
+        }
 
        // submit function
        $('#btn-submit').click(function(event)
