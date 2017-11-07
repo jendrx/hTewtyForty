@@ -17,12 +17,10 @@ class RoundsController extends AppController
     public function view( $id = null )
     {
         // find questions by get round by id and extract
-        $round = $this->Rounds->find('all',['conditions' => ['Rounds.id' => $id],'contain' => ['Studies','QuestionsIndicatorsYears.QuestionsIndicators.Questions']]);
-        $collection = new Collection($round);
-        $questions = array_unique($collection->extract('questions_indicators_years.{*}.questions_indicator.question')->toArray());
 
-
-
+        $round = $this->Rounds->get($id,['contain' => 'Studies']);
+        $query = $this->Rounds->find('all',['conditions' => ['Rounds.id' => $id],'contain' => ['Studies','QuestionsIndicatorsYears.QuestionsIndicators.Questions']]);
+        $questions = array_unique($query->extract('questions_indicators_years.{*}.questions_indicator.question')->toArray());
         foreach($questions as &$question)
         {
 
@@ -34,8 +32,8 @@ class RoundsController extends AppController
             $question['questions_indicators'] = $questionsIndicators;
         }
 
-        $this->set(compact('questions'));
-        $this->set('_serialize',[ 'questions']);
+        $this->set(compact('questions','round'));
+        $this->set('_serialize',[ 'questions', 'round']);
 
     }
 

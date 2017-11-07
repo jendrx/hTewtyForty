@@ -57,7 +57,6 @@
                     endforeach;
                 // end target column
                 echo '</div>';
-
                  echo '<div class="large-6 columns">';
                     foreach($question['questions_indicators'] as $question_indicator):
 
@@ -92,6 +91,71 @@
 
 <script>
 
+
+    // functions related with chart data
+    function parseChartData(data) {
+        var keys = Object.keys(data[0]);
+        var cols = [];
+        var rows = [];
+        for (keyIndex = 0, keysLength = keys.length; keyIndex < keysLength; keyIndex ++)
+        {
+            if(keyIndex > 1)
+                cols.push({label : keys[keyIndex], type : 'number', role:'interval'});
+            else
+                cols.push({label : keys[keyIndex], type : 'number'});
+        }
+
+        for (rowIndex = 0, length = data.length; rowIndex < length; rowIndex ++)
+        {
+            var rowValues = Object.values(data[rowIndex]);
+            var values = [];
+            for(colIndex = 0, rowLength = rowValues.length; colIndex < rowLength; colIndex ++)
+            {
+                values.push({v:rowValues[colIndex]});
+            }
+            rows.push({c:values});
+        }
+
+        return {cols:cols,rows:rows};
+    }
+
+    function getIndicatorData(study,scenario,indicator) {
+        $.ajax({
+            type: "GET",
+            url: '/charts/getIndicatorData',
+            dataType: 'json',
+            data: {
+                'study' : study,
+                'scenario' : scenario,
+                'indicator' : indicator},
+            success: function (data)
+            {
+                console.log(data.response);
+                var chartData = parseChartData(data.response);
+                drawChart(chartData,'chart-'+indicator,indicator,'Physician');
+            }
+        });
+
+    }
+
+    function drawChart(chart_data,chart_div, chart1_main_title, chart1_vaxis_title) {
+        var chart1_data = new google.visualization.DataTable(chart_data);
+        var chart1_options = {
+            title: chart1_main_title,
+            curveType:'function',
+            vAxis: {title: chart1_vaxis_title,  titleTextStyle: {color: 'red'}},
+            series: [{'color': '#0a0'}],
+            intervals: { 'style':'area' }
+
+        };
+
+        var chart1_chart = new google.visualization.LineChart(document.getElementById(chart_div));
+        chart1_chart.draw(chart1_data, chart1_options);
+    }
+
+
+
+    // functions related with user input
     function objectifyForm(formArray)
     {
         var objectified = {};
@@ -106,26 +170,35 @@
     function validate(data)
     {
         $.ajax({
-        type: 'POST',
-        url: '/hTwentyForty/rounds/validate',
-        dataType: 'json',
-        data: data,
-        success: function (data)
-        {
-            if(!data.response)
+            type: 'POST',
+            url: '/hTwentyForty/rounds/validate',
+            dataType: 'json',
+            data: data,
+            success: function (data)
             {
-                $('#div-round-view-content').prepend('<div class="error message", onclick="this.classList.add(\'hidden\')"> Values inserted does not match</div>')
-            }else
-            {
-                $('#form-round').submit();
+                if(!data.response)
+                {
+                    $('#div-round-view-content').prepend('<div class="error message", onclick="this.classList.add(\'hidden\')"> Values inserted does not match</div>')
+                }else
+                {
+                    $('#form-round').submit();
+                }
             }
-        }
         });
     }
 
 
     $(document).ready(function()
     {
+
+
+
+
+
+
+
+
+       // submit function
        $('#btn-submit').click(function(event)
        {
            event.preventDefault();
