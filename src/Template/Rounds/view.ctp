@@ -8,74 +8,110 @@
 <!-- load google charts-->
 <?php  echo $this->Html->script('https://www.gstatic.com/charts/loader.js'); ?>
 <div id="div-round-view-content" class="row">
-    <div class="large-12 columns content">
+    <div class="large-12 columns round-content">
 
         <?php foreach( $questions as $question):
 
             echo '<div class="row">';
-                echo '<h3>'.$question->description.'</h3>';
-                echo '<div class="large-12 columns">';
-                echo '<div class="row">';
-                echo '<div class="large-6 columns">';
 
+
+                echo '<div class="large-12 columns">';
+
+                /* informative charts div begin*/
+                echo '<div class="row chartdiv ">';
+
+                echo '<div class=" panel "><h3>Take into consideration the scenario.</h3></div>';
+
+                foreach($question['questions_indicators'] as $question_indicator):
+                    if(!$question_indicator->target):
+                        // row by indicator
+                        echo '<div class="large-6 columns">';
+                            echo '<h4>'.$question_indicator->indicator->description.'</h4>';
+                            echo '<div id="chart-'.$question_indicator->indicator->filename.'"></div>';
+                        echo '</div>';
+                    endif;
+                 endforeach;
+
+                // end target column
+                // end question_indicators row
+                echo '</div>';
+
+                echo '<br>';
+                echo '<br>';
+
+
+                echo '<br>';
+                echo '<br>';
+
+                echo '<h3>'.$question->description.'</h3>';
+
+                /* target and non ratio charts begin*/
 
                 echo $this->Form->create(null,[ 'url' => ['controller' => 'answers', 'action' => 'add'],'id' => 'form-round']);
-
+                echo '<div class="row chartdiv">';
                 $index = 0;
-                    foreach($question['questions_indicators'] as $question_indicator):
-
-                        if($question_indicator->target):
-                            // row by indicator
-
-                            echo '<div class="row">';
+                foreach($question['questions_indicators'] as $question_indicator):
+                    if($question_indicator->target && !$question_indicator->ratio):
+                        // row by indicator
+                        echo '<div class="large-6 columns">';
                             echo '<h4>'.$question_indicator->indicator->description.'</h4>';
-                            echo '<div class="row">';
+                            echo '<div id="chart-'.$question_indicator->indicator->filename.'"></div>';
 
-                            foreach( $question_indicator['questions_indicators_years'] as $question_indicator_year):
-
+                          foreach( $question_indicator['questions_indicators_years'] as $question_indicator_year):
                                 //create answer id input
-                                /*echo $this->Form->control('id');
-                                echo $this->Form->control('round_question_indicator_year_id')*/
-
                                 foreach ($question_indicator_year['rounds'] as $round_question_indicator_year):
                                     echo $this->Form->control($index.'.id',['type' => 'hidden']);
                                     echo $this->Form->control($index.'.round_question_indicator_year_id',['type' => 'hidden','value' => $round_question_indicator_year['_joinData']['id']]);
-                                    echo '<div class="large-4 columns">';
-                                    echo '<div class="small-3 columns">';
-                                    echo '<label for="right-label" class="right">'.$question_indicator_year['year']['description'].'</label>';
+                                    echo '<div class="large-4 columns" >';
+                                    echo '<div class="small-5 columns">';
+                                    echo '<label for="right-label" class="right">'.h($question_indicator_year['year']['description']).'</label>';
                                     echo '</div>';
-                                    echo '<div class="small-9 columns">';
+                                    echo '<div class="small-7 columns">';
                                     echo $this->Form->control($index.'.value', ['value' => $round_question_indicator_year['_joinData']['value'], 'label' => false]);
                                     echo '</div>';
                                     echo '</div>';
                                     $index = $index + 1;
                                 endforeach;
                             endforeach;
-                            echo '</div>';
-                            echo '<div id="chart-'.$question_indicator->indicator->filename.'"></div>';
-                            echo '</div>';
-                        endif;
-                    endforeach;
-                // end target column
+                        echo '</div>';
+                    endif;
+                 endforeach;
+
                 echo '</div>';
-                 echo '<div class="large-6 columns">';
-                    foreach($question['questions_indicators'] as $question_indicator):
+                echo '<br>';
+                echo '<br>';
+                /*target and  ratio chart begin */
+                echo '<div class="row">';
 
-                        if(!$question_indicator->target):
-                            // row by indicator
+               foreach($question['questions_indicators'] as $question_indicator):
+                    if($question_indicator->target && $question_indicator->ratio):
+                        // row by indicator
+                        echo '<h4>'.$question_indicator->indicator->description.'</h4>';
+                        echo '<div class="large-6  large-centered columns content ">';
 
-                            echo '<div class="row">';
-                            echo '<h4>'.$question_indicator->indicator->description.'</h4>';
                             echo '<div id="chart-'.$question_indicator->indicator->filename.'"></div>';
-                            echo '</div>';
-                        endif;
 
-                    endforeach;
+                          foreach( $question_indicator['questions_indicators_years'] as $question_indicator_year):
 
-                // end target column
-                echo '</div>';
+                                //create answer id input
+                                foreach ($question_indicator_year['rounds'] as $round_question_indicator_year):
+                                    echo $this->Form->control($index.'.id',['type' => 'hidden']);
+                                    echo $this->Form->control($index.'.round_question_indicator_year_id',['type' => 'hidden','value' => $round_question_indicator_year['_joinData']['id']]);
+                                    echo '<div class="large-4 columns">';
+                                    echo '<div class="small-5 columns">';
+                                    echo '<label for="right-label" class="right">'.h($question_indicator_year['year']['description']).'</label>';
+                                    echo '</div>';
+                                    echo '<div class="small-7 columns">';
+                                    echo $this->Form->control($index.'.value', ['value' => $round_question_indicator_year['_joinData']['value'], 'label' => false]);
+                                    echo '</div>';
+                                    echo '</div>';
+                                    $index = $index + 1;
+                                endforeach;
+                            endforeach;
+                        echo '</div>';
+                    endif;
+                 endforeach;
 
-                // end question_indicators row
                 echo '</div>';
 
 
@@ -140,12 +176,16 @@
 
     function drawChart(chart_data,chart_div, chart1_main_title, chart1_vaxis_title) {
         var chart1_data = new google.visualization.DataTable(chart_data);
+
+
         var chart1_options = {
+            height:300,
             title: chart1_main_title,
             curveType:'function',
             vAxis: {title: chart1_vaxis_title,  titleTextStyle: {color: 'red'}},
             series: [{'color': '#0a0'}],
-            intervals: { 'style':'area' }
+            intervals: { 'style':'area' },
+            hAxis: { format:''}
 
         };
 
