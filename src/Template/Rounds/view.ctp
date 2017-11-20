@@ -182,11 +182,10 @@
             height:300,
             title: chart1_main_title,
             curveType:'function',
-            vAxis: {title: chart1_vaxis_title,  titleTextStyle: {color: 'red'}},
             series: [{'color': '#0a0'}],
             intervals: { 'style':'area' },
+            vAxis: {title: chart1_vaxis_title},
             hAxis: { format:''}
-
         };
 
         var chart1_chart = new google.visualization.LineChart(document.getElementById(chart_div));
@@ -211,7 +210,7 @@
     {
         $.ajax({
             type: 'POST',
-            url: '/hTwentyForty/rounds/validate',
+            url: '/hTwentyForty/answers/validate',
             dataType: 'json',
             data: data,
             success: function (data)
@@ -244,7 +243,6 @@
 
                 (function(cntr)
                 {
-
                     google.charts.setOnLoadCallback(function(){
                         getIndicatorData(round.study.scenario,question.questions_indicators[cntr].indicator);
                     });

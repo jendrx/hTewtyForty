@@ -14,12 +14,16 @@ class AnswersController extends AppController
 
     public function add()
     {
+        $this->loadModel('Users');
         if($this->request->is('post'))
         {
             $data = $this->request->getData();
             $answers = $this->Answers->newEntities($data);
 
             $user_id = $this->Auth->user('id');
+
+
+            echo json_encode($data);
 
             foreach($answers as $answer)
             {
@@ -28,6 +32,14 @@ class AnswersController extends AppController
 
             if($this->Answers->saveMany($answers))
             {
+
+                // get study for answers, set user study completed and get new study
+                $study_id = $this->Answers->getStudy($answers[0]['id']);
+                $this->Users->finishStudy($user_id,$study_id);
+
+                $answered = true;
+                $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy']);
+
                 $this->Flash->success(__('Answer has been saved'));
             }
             else
@@ -38,6 +50,30 @@ class AnswersController extends AppController
 
         $this->set(compact('answer'));
         $this->set('_serialize',['answer']);
+    }
+
+
+    public function validate()
+    {
+        $error = 0.3;
+        if ($this->request->is('ajax')) {
+            $response = true;
+            $data = $this->request->getData();
+
+            for ($i = 0; $i < count($data) / 3; $i++) {
+                $result =  $data[$i]['value'] /  $data[$i + 3]['value'];
+                $max_threshold = $result + $error * $result;
+                $min_threshold = $result - $error * $result;
+                $ratio = $data[$i + 6]['value'];
+
+                // if result is not between delta error
+                if ($ratio > $max_threshold || $ratio < $min_threshold) {
+                    $response = false;
+                }
+            }
+        }
+        $this->set(compact('response'));
+        $this->set('_serialize', (['response']));
     }
 
 }

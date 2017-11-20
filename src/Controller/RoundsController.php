@@ -34,31 +34,5 @@ class RoundsController extends AppController
 
         $this->set(compact('questions','round'));
         $this->set('_serialize',[ 'questions', 'round']);
-
     }
-
-    public function validate()
-    {
-
-        $error = 0.3;
-        if ($this->request->is('ajax')) {
-            $response = true;
-            $data = $this->request->getData();
-
-            for ($i = 0; $i < count($data) / 3; $i++) {
-                $result =  $data[$i]['value'] /  $data[$i + 3]['value'];
-                $max_threshold = $result + $error * $result;
-                $min_threshold = $result - $error * $result;
-                $ratio = $data[$i + 6]['value'];
-
-                // if result is not between delta error
-                if ($ratio > $max_threshold || $ratio < $min_threshold) {
-                    $response = false;
-                }
-            }
-        }
-        $this->set(compact('response'));
-        $this->set('_serialize', (['response']));
-    }
-
 }

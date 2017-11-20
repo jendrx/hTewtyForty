@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\ORM\TableRegistry;
 
 /**
  * Answers Model
@@ -81,5 +82,19 @@ class AnswersTable extends Table
         $rules->add($rules->existsIn(['round_question_indicator_year_id'], 'RoundsQuestionsIndicatorsYears'));
 
         return $rules;
+    }
+
+
+    public function getStudy($id)
+    {
+        $rounds = TableRegistry::get('Rounds');
+        $answer =$this->get($id);
+        $round_question_indicator_year_id = $answer->round_question_indicator_year_id;
+
+        $study_id = $rounds->find()->matching('RoundsQuestionsIndicatorsYears', function($q) use($round_question_indicator_year_id){
+           return $q->where([ 'RoundsQuestionsIndicatorsYears.id'  =>  $round_question_indicator_year_id]);
+        })->first()->study_id;
+
+        return $study_id;
     }
 }

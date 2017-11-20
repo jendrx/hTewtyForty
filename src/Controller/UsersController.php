@@ -80,11 +80,10 @@ class UsersController extends AppController
             $study = $this->Users->getActiveStudy($user_id);
         }catch( RecordNotFoundException $e)
         {
-            $this->Flash->error($e);
+            $this->Flash->error(__('AHAHAH'));
         }
 
         if($study)
             return $this->redirect(['controller' => 'Studies', 'action' => 'view', $study['id']]);
     }
-
 }

@@ -6,6 +6,9 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\I18n\Time;
+use Cake\ORM\TableRegistry;
+
 
 /**
  * Users Model
@@ -46,6 +49,8 @@ class UsersTable extends Table
             'targetForeignKey' => 'study_id',
             'joinTable' => 'users_studies'
         ]);
+
+        $this->hasMany('Answers',['foreignKey' => 'user_id']);
     }
 
     /**
@@ -89,6 +94,7 @@ class UsersTable extends Table
         return $rules;
     }
 
+/*
     public function getActiveStudy($id = null)
     {
         $study_id = $this->Studies->find('all',['conditions' => 'Studies.completed is null', 'order' => ['Studies.id' => 'ASC']])->matching('Users', function($q) use($id){
@@ -102,5 +108,52 @@ class UsersTable extends Table
         }
 
         return $study_id;
+    }*/
+
+
+
+    public function getActiveStudy($id = null)
+    {
+
+        $usersStudiesTable = TableRegistry::get('users_studies');
+
+        $query = $usersStudiesTable->find('all',['conditions' => ['user_id' => $id, 'completed is null'], 'order' => ['id' => 'ASC']])->firstorFail();
+
+
+
+        $study = $this->Studies->get($query->study_id);
+
+
+        if(empty($study))
+        {
+            throw new RecordNotFoundException(__('Study not found'));
+        }
+
+        return $study;
     }
+
+    // dirty field is missing
+    public function finishStudy($user_id,$study_id)
+    {
+        $usersStudiesTable = TableRegistry::get('users_studies');
+
+
+        $query = $usersStudiesTable->find('all',['conditions' => ['user_id' => $user_id, 'study_id' => $study_id]])->first();
+
+
+        $usersStudies = $usersStudiesTable->get($query->id);
+
+        echo $usersStudies;
+
+        $usersStudies->completed = Time::now();
+
+        echo $usersStudies;
+        if($usersStudiesTable->save($usersStudies))
+            return true;
+
+        return false;
+
+    }
+
+
 }

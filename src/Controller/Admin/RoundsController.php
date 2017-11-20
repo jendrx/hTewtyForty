@@ -3,6 +3,8 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use Cake\I18n\Time;
+use Cake\Http\Client;
+use Cake\Collection\Collection;
 
 /**
  * Rounds Controller
@@ -40,21 +42,14 @@ class RoundsController extends AppController
     public function view($id = null)
     {
         $round = $this->Rounds->get($id, [
-            'contain' => ['Studies', 'QuestionsIndicatorsYears']
+            'contain' => ['Studies' => 'Users' , 'QuestionsIndicatorsYears']
         ]);
 
-        $answers = $this->Rounds->getAnswers($id);
+        $submitedState = $this->Rounds->getSumbitedState($id);
+        //$answers = $this->Rounds->getAnswers($id);
 
-        $this->set(compact('round', 'answers'));
-        $this->set('_serialize', ['round','answers']);
-    }
-
-    public function test($id = null)
-    {
-        $answers = $this->Rounds->getAnswers($id);
-
-        $this->set(compact('answers'));
-        $this->set('_serialize', ['answers']);
+        $this->set(compact('round', 'answers','submitedState'));
+        $this->set('_serialize', ['round','answers', 'submitedState']);
     }
 
     /**
@@ -143,4 +138,79 @@ class RoundsController extends AppController
         return $this->redirect(['controller' => 'Studies', 'action' => 'view',  $round->study_id]);
     }
 
+
+    protected function getAnswers( $id = null)
+    {
+        $query = $this->Rounds->getAnswers($id);
+        $round = $this->Rounds->get($id,['contain' => 'Studies']);
+        $jsonPost = array();
+        foreach($query as $key => $values)
+        {
+            $indicators_years = array();
+            $indicators =array();
+            $indicators_years['year'] = $key;
+            $indicators_years['scenario'] = $round['study']['scenario'];
+            foreach($values as $value) {
+                $indicator = array();
+                $answers = array();
+                $indicator['description'] = $value['questions_indicators_year']['questions_indicator']['indicator']['filename'];
+                $indicator['question_indicator_year'] = $value['questions_indicators_year']['id'];
+
+                foreach ($value['answers'] as $answer) {
+                    array_push($answers, ['value' => $answer['value']]);
+                }
+                $indicator['answers'] = $answers;
+
+                array_push($indicators, $indicator);
+
+            }
+            $indicators_years['indicators'] = $indicators;
+            array_push($jsonPost,$indicators_years);
+
+        }
+
+        return $jsonPost;
+    }
+
+    protected function processData($inputArray = null)
+    {
+        //Encode the array into JSON.
+        $jsonDataEncoded = json_encode(['json' => $inputArray]);
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => 'http://localhost:8000/processAnswers',
+            CURLOPT_POST => TRUE,
+            CURLOPT_POSTFIELDS =>  $jsonDataEncoded,
+            CURLOPT_RETURNTRANSFER => TRUE,
+            ]);
+
+            $response = json_decode(curl_exec($ch));
+            curl_close($ch);
+        return $response;
+    }
+
+    public function testws($id)
+    {
+        $this->loadModel('Results');
+        $answers = $this->getAnswers($id);
+        $response  = array();
+        foreach($answers as $answer)
+        {
+            $indicators = $this->processData(json_encode($answer));
+
+            foreach($indicators as $indicator )
+            {
+                $toSave = array(array('round_id' => $id, 'question_indicator_year_id' => $indicator->question_indicator_year,'val' => $indicator->mean));
+                $this->Results->add($toSave);
+            }
+        }
+        $this->set(compact('response'));
+        $this->set('_serialize', ['response']);
+    }
+
+
+
+
+
 }
+

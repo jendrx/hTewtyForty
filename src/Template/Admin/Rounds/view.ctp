@@ -41,7 +41,7 @@
             <td><?= h($round->completed) ?></td>
         </tr>
     </table>
-    <div class="related">
+<!--    <div class="related">
         <h4><?= __('Related Questions Indicators Years') ?></h4>
         <?php if (!empty($round->questions_indicators_years)): ?>
         <table cellpadding="0" cellspacing="0">
@@ -66,10 +66,31 @@
         </table>
         <?php endif; ?>
     </div>
+-->
+
+    <div class="related">
+        <h4><?=__('Sumbited Answers') ?></h4>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th scope="col"><?=__('Username')?></th>
+                <th scope="col"> <?=__('Sumbited')?></th>
+            </tr>
+            <?php foreach($submitedState as $val):?>
+            <tr>
+                <td><?= h($val->username)?></td>
+                <td><?= empty($val->answers) ? h('No') : h('Yes')  ?></td>
+            </tr>
+            <?php endforeach;?>
+        </table>
+    </div>
 
     <?php
         if(!$round->has('completed')):
             echo $this->Form->postLink(__('Finish Round'), ['controller' => 'Rounds', 'action' => 'finish', $round->id], ['confirm' => __('Are you sure you want to finish round # {0}?', $round->step)]);
         endif;
+    ?>
+
+    <?php
+        echo $this->Form->postLink(__('Create Results'), ['controller' => 'Rounds', 'action' => 'processData', $round->id], ['confirm' => __('Are you sure you generate round\'s # {0} results ?', $round->step)]);
     ?>
 </div>
