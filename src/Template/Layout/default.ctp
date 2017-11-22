@@ -51,7 +51,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </ul>
     <div class="top-bar-section">
         <ul class="right">
-            <?php echo $this->Html->link(__('Logout'),['controller' => 'Users', 'action' => 'logout']);?>
+            <li><?php echo $this->Html->link(__('Logout'),['controller' => 'Users', 'action' => 'logout']);?></li>
+
         </ul>
     </div>
 </nav>
