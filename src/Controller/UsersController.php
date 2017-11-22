@@ -70,7 +70,7 @@ class UsersController extends AppController
     }
 
 
-    public function getActiveStudy()
+    public function getActiveStudy($answered = false)
     {
         $user_id = $this->Auth->user('id');
 
@@ -80,7 +80,10 @@ class UsersController extends AppController
             $study = $this->Users->getActiveStudy($user_id);
         }catch( RecordNotFoundException $e)
         {
-            $this->Flash->error(__('AHAHAH'));
+            if($answered)
+                $this->Flash->success(__('Obrigado pela sua colaboração.'));
+            else
+                $this->Flash->error(__('Não existem estudos associados à sua conta.'));
         }
 
         if($study)

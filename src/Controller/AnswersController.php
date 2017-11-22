@@ -22,9 +22,6 @@ class AnswersController extends AppController
 
             $user_id = $this->Auth->user('id');
 
-
-            echo json_encode($data);
-
             foreach($answers as $answer)
             {
                 $answer->user_id = $user_id;
@@ -38,7 +35,7 @@ class AnswersController extends AppController
                 $this->Users->finishStudy($user_id,$study_id);
 
                 $answered = true;
-                $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy']);
+                $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy', $answered]);
 
                 $this->Flash->success(__('Answer has been saved'));
             }

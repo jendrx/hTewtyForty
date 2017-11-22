@@ -119,16 +119,8 @@ class UsersTable extends Table
 
         $query = $usersStudiesTable->find('all',['conditions' => ['user_id' => $id, 'completed is null'], 'order' => ['id' => 'ASC']])->firstorFail();
 
-
-
         $study = $this->Studies->get($query->study_id);
-
-
-        if(empty($study))
-        {
-            throw new RecordNotFoundException(__('Study not found'));
-        }
-
+        
         return $study;
     }
 
@@ -139,7 +131,6 @@ class UsersTable extends Table
 
 
         $query = $usersStudiesTable->find('all',['conditions' => ['user_id' => $user_id, 'study_id' => $study_id]])->first();
-
 
         $usersStudies = $usersStudiesTable->get($query->id);
 
