@@ -8,11 +8,12 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('List Questions Indicators'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Studies'), ['controller' => 'Studies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Rounds'), ['controller' => 'Rounds','action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('Questions'), ['controller' => 'Questions', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Indicators'), ['controller' => 'Users', 'Indicators' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Questions'), ['controller' => 'Questions', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Question'), ['controller' => 'Questions', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Indicators'), ['controller' => 'Indicators', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Indicator'), ['controller' => 'Indicators', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Years'), ['controller' => 'Years', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Year'), ['controller' => 'Years', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="questionsIndicators form large-9 medium-8 columns content">
@@ -22,6 +23,8 @@
         <?php
             echo $this->Form->control('question_id', ['options' => $questions, 'empty' => true]);
             echo $this->Form->control('indicator_id', ['options' => $indicators, 'empty' => true]);
+            echo $this->Form->control('label', ['type' => 'text']);
+            echo $this->Form->control('title', ['type' => 'text']);
             echo $this->Form->control('target');
             echo $this->Form->control('ratio');
             echo $this->Form->control('years._ids', ['options' => $years]);

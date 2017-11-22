@@ -37,6 +37,8 @@ class QuestionsIndicator extends Entity
         'question' => true,
         'indicator' => true,
         'years' => true,
-        'questions_indicators_years' => true
+        'questions_indicators_years' => true,
+        'label' => true,
+        'title' => true
     ];
 }

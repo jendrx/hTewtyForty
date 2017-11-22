@@ -18,7 +18,7 @@
         <legend><?= __('Add Indicator') ?></legend>
         <?php
             echo $this->Form->control('description',['type' => 'text']);
-            //echo $this->Form->control('questions._ids', ['options' => $questions]);
+            echo $this->Form->control('filename', ['type' => 'text']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

@@ -93,17 +93,6 @@ class RoundsTable extends Table
 
     public function getRoundMean($round_id = null)
     {
-       /* $answers  = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) {
-            return $q->select(['round_question_indicator_year_id','value' => $q->func()->avg('value')])->group('round_question_indicator_year_id');
-        }, 'QuestionsIndicatorsYears' =>[ 'Years', 'QuestionsIndicators' => ['Indicators']]]])
-            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])
-            ->select(['id','questionsindicatorsyears.id','years.description','indicators.id','indicators.description'])->formatResults(function($q){
-                 return $q->map(function($results){
-                    return $results->indicators;
-                });
-            });*/
-
-
         $answers  = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) {
             return $q->select(['round_question_indicator_year_id','value' => $q->func()->avg('value')])->group('round_question_indicator_year_id');
         }, 'QuestionsIndicatorsYears' =>[ 'Years', 'QuestionsIndicators' => ['Indicators']]]])
@@ -120,30 +109,21 @@ class RoundsTable extends Table
         return $answers;
     }
 
-    /*->select(['id','questionsindicatorsyears.id','years.description','indicators.id','indicators.description'])*/
-
-
-
     public function getAnswers($round_id = null)
-    {
+     {
+         $answers = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) {
+             $ids = $q->select([ 'id' => $q->func()->max('id'), 'round_question_indicator_year_id'])->group(['round_question_indicator_year_id','user_id'])->extract('id')->toArray();
+             return $this->RoundsQuestionsIndicatorsYears->Answers->find('all',['fields' => ['user_id','value','round_question_indicator_year_id']])->where(['Answers.id in ' => $ids]);
+         }, 'QuestionsIndicatorsYears' => ['Years' => ['fields' => ['id', 'description']], 'QuestionsIndicators.Indicators' => ['fields' => ['id','description','filename']]]]])
+             ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->groupBy('questions_indicators_year.year.description');
 
-        $answers = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) {
-         return $q->select(['round_question_indicator_year_id','value','user_id'])->group(['round_question_indicator_year_id','value','user_id']);
-        }, 'QuestionsIndicatorsYears' => ['Years' => ['fields' => ['id', 'description']], 'QuestionsIndicators.Indicators' => ['fields' => ['id','description','filename']]]]])->formatResults( function($q)
-        {
-            $collection = new collection($q);
-
-            $years = array_unique($collection->extract('questions_indicators_year.year')->toArray(),SORT_REGULAR);
-            return $q;
-        })->groupBy('questions_indicators_year.year.description');
-
-        return $answers;
-    }
+         return $answers;
+     }
 
 
     public function getSumbitedState($round_id = null)
     {
-        $round =$this->get($round_id);
+        $round = $this->get($round_id);
 
         $users = $this->Studies->Users->find('all')->matching('Studies',function($q) use($round_id){
             $study_id = $this->get($round_id)->study_id;

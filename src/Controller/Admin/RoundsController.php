@@ -139,7 +139,7 @@ class RoundsController extends AppController
     }
 
 
-    protected function getAnswers( $id = null)
+    public function getAnswers( $id = null)
     {
         $query = $this->Rounds->getAnswers($id);
         $round = $this->Rounds->get($id,['contain' => 'Studies']);
@@ -147,7 +147,7 @@ class RoundsController extends AppController
         foreach($query as $key => $values)
         {
             $indicators_years = array();
-            $indicators =array();
+            $indicators = array();
             $indicators_years['year'] = $key;
             $indicators_years['scenario'] = $round['study']['scenario'];
             foreach($values as $value) {
@@ -168,7 +168,6 @@ class RoundsController extends AppController
             array_push($jsonPost,$indicators_years);
 
         }
-
         return $jsonPost;
     }
 
@@ -189,10 +188,11 @@ class RoundsController extends AppController
         return $response;
     }
 
-    public function testws($id)
+    public function testws($id = null)
     {
         $this->loadModel('Results');
         $answers = $this->getAnswers($id);
+
         $response  = array();
         foreach($answers as $answer)
         {
@@ -200,7 +200,8 @@ class RoundsController extends AppController
 
             foreach($indicators as $indicator )
             {
-                $toSave = array(array('round_id' => $id, 'question_indicator_year_id' => $indicator->question_indicator_year,'val' => $indicator->mean));
+                echo json_encode($indicator);
+                $toSave = array(array('round_id' => $id, 'question_indicator_year_id' => $indicator->question_indicator_year,'val' => $indicator->result));
                 $this->Results->add($toSave);
             }
         }

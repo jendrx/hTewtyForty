@@ -54,7 +54,8 @@ class IndicatorsController extends AppController
         if ($this->request->is('post')) {
             $indicator = $this->Indicators->patchEntity($indicator, $this->request->getData());
 
-            $indicator->filename = strtolower(str_replace(' ', '-',trim($indicator->description)));
+            // filename on R service's directory
+            //$indicator->filename = strtolower(str_replace(' ', '-',trim($indicator->)));
             if ($this->Indicators->save($indicator)) {
                 $this->Flash->success(__('The indicator has been saved.'));
 

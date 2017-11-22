@@ -30,6 +30,9 @@
             echo $this->Form->control('question_id', ['options' => $questions, 'empty' => true]);
             echo $this->Form->control('indicator_id', ['options' => $indicators, 'empty' => true]);
             echo $this->Form->control('target');
+            echo $this->Form->control('ratio');
+            echo $this->Form->control('label');
+            echo $this->Form->control('title');
             echo $this->Form->control('years._ids', ['options' => $years]);
         ?>
     </fieldset>

@@ -91,6 +91,6 @@
     ?>
 
     <?php
-        echo $this->Form->postLink(__('Create Results'), ['controller' => 'Rounds', 'action' => 'processData', $round->id], ['confirm' => __('Are you sure you generate round\'s # {0} results ?', $round->step)]);
+        echo $this->Form->postLink(__('Create Results'), ['controller' => 'Rounds', 'action' => 'testws', $round->id], ['confirm' => __('Are you sure you generate round\'s # {0} results ?', $round->step)]);
     ?>
 </div>

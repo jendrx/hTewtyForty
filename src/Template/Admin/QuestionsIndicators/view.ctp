@@ -38,7 +38,19 @@
             <th scope="row"><?= __('Target') ?></th>
             <td><?= $questionsIndicator->target ? __('Yes') : __('No'); ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Ratio') ?></th>
+            <td><?= $questionsIndicator->ratio ? __('Yes') : __('No'); ?></td>
+        </tr>
     </table>
+    <div class="row">
+        <h4><?= __('Label') ?></h4>
+        <?= $this->Text->autoParagraph(h($questionsIndicator->label)); ?>
+    </div>
+    <div class="row">
+        <h4><?= __('Title') ?></h4>
+        <?= $this->Text->autoParagraph(h($questionsIndicator->title)); ?>
+    </div>
     <div class="related">
         <h4><?= __('Related Years') ?></h4>
         <?php if (!empty($questionsIndicator->years)): ?>
