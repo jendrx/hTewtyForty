@@ -13,20 +13,18 @@
         <?php foreach( $questions as $question):
 
             echo '<div class="row">';
-
-
                 echo '<div class="large-12 columns">';
 
                 /* informative charts div begin*/
-                echo '<div class="row chartdiv ">';
+                echo '<div class="row chartdiv">';
 
-                echo '<div class=" panel "><h3>Take into consideration the scenario.</h3></div>';
+                echo '<div class="panel"><h3>Take into consideration the scenario.</h3></div>';
 
                 foreach($question['questions_indicators'] as $question_indicator):
                     if(!$question_indicator->target):
                         // row by indicator
                         echo '<div class="large-6 columns">';
-                            echo '<h4>'.$question_indicator->indicator->description.'</h4>';
+                            echo '<h4>'.$question_indicator->title.'</h4>';
                             echo '<div id="chart-'.$question_indicator->indicator->filename.'"></div>';
                         echo '</div>';
                     endif;
@@ -34,8 +32,8 @@
 
                 // end target column
                 // end question_indicators row
+
                 echo '</div>';
-
                 echo '<br>';
                 echo '<br>';
 
@@ -43,7 +41,7 @@
                 echo '<br>';
                 echo '<br>';
 
-                echo '<h3>'.$question->description.'</h3>';
+                echo '<div class="panel"><h3>'.$question->description.'</h3></div>';
 
                 /* target and non ratio charts begin*/
 
@@ -54,7 +52,7 @@
                     if($question_indicator->target && !$question_indicator->ratio):
                         // row by indicator
                         echo '<div class="large-6 columns">';
-                            echo '<h4>'.$question_indicator->indicator->description.'</h4>';
+                            echo '<h4>'.$question_indicator->title.'</h4>';
                             echo '<div id="chart-'.$question_indicator->indicator->filename.'"></div>';
 
                           foreach( $question_indicator['questions_indicators_years'] as $question_indicator_year):
@@ -81,13 +79,13 @@
                 echo '<br>';
                 echo '<br>';
                 /*target and  ratio chart begin */
-                echo '<div class="row">';
+                echo '<div class="row  ">';
 
                foreach($question['questions_indicators'] as $question_indicator):
                     if($question_indicator->target && $question_indicator->ratio):
                         // row by indicator
-                        echo '<h4>'.$question_indicator->indicator->description.'</h4>';
-                        echo '<div class="large-6  large-centered columns content ">';
+                        echo '<h4>'.$question_indicator->title.'</h4>';
+                        echo '<div class="large-6  large-centered columns content" >';
 
                             echo '<div id="chart-'.$question_indicator->indicator->filename.'"></div>';
 
