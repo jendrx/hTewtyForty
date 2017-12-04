@@ -84,6 +84,7 @@ class UsersController extends AppController
                 $this->Flash->success(__('Obrigado pela sua colaboração.'));
             else
                 $this->Flash->error(__('Não existem estudos associados à sua conta.'));
+            $this->redirect(['action' => 'logout']);
         }
 
         if($study)

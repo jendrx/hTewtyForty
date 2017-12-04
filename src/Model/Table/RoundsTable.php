@@ -53,6 +53,8 @@ class RoundsTable extends Table
         ]);
 
         $this->hasMany('RoundsQuestionsIndicatorsYears',['foreignKey' => 'round_id']);
+
+        $this->hasMany('Results', ['foreignKey' => 'round_id']);
     }
 
     /**
@@ -109,7 +111,7 @@ class RoundsTable extends Table
         return $answers;
     }
 
-    public function getAnswers($round_id = null)
+    /*public function getAnswers($round_id = null)
      {
          $answers = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) {
              $ids = $q->select([ 'id' => $q->func()->max('id'), 'round_question_indicator_year_id'])->group(['round_question_indicator_year_id','user_id'])->extract('id')->toArray();
@@ -118,8 +120,36 @@ class RoundsTable extends Table
              ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->groupBy('questions_indicators_year.year.description');
 
          return $answers;
-     }
+     }*/
 
+    /*get only consistent answers*/
+    public function getAnswers($round_id = null)
+    {
+        $answers = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) {
+            $ids = $q->select([ 'id' => $q->func()->max('id'), 'round_question_indicator_year_id'])->where(['consistent' => true])->group(['round_question_indicator_year_id','user_id'])->extract('id')->toArray();
+            return $this->RoundsQuestionsIndicatorsYears->Answers->find('all',['fields' => ['user_id','value','round_question_indicator_year_id']])->where(['Answers.id in ' => $ids]);
+        }, 'QuestionsIndicatorsYears' => ['Years' => ['fields' => ['id', 'description']], 'QuestionsIndicators.Indicators' => ['fields' => ['id','description','filename']]]]])
+            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->groupBy('questions_indicators_year.year.description');
+
+        return $answers;
+    }
+
+    public function getResults($round_id = null)
+    {
+        $results = $this->Results->find('all', ['contain' => ['QuestionsIndicatorsYears' => ['QuestionsIndicators.Indicators', 'Years']]])->formatResults(function ($q) {
+            $indicators = array_unique($q->extract('questions_indicators_year.questions_indicator.indicator')->toArray());
+            foreach ($indicators as &$indicator) {
+                $temp = $q->match(['questions_indicators_year.questions_indicator.indicator.id' => $indicator->id]);
+                $indicator['values'] = $temp->extract(function ($key) {
+                    return array('year' => $key['questions_indicators_year']['year']['description'], 'value' => $key['val']);
+                });
+            }
+
+            return $indicators;
+        })->where(['round_id' => $round_id]);
+
+        return $results;
+    }
 
     public function getSumbitedState($round_id = null)
     {

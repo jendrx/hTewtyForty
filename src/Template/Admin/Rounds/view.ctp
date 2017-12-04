@@ -84,6 +84,28 @@
         </table>
     </div>
 
+    <div class="related">
+        <h4><?=__('Results') ?></h4>
+        <?php if(!isset($results)): ?>
+            <?php foreach($results as $result): ?>
+                <div class="row">
+                    <h5><?= $result->description?></h5>
+                    <ul>
+                        <?php foreach($result['values'] as $content):?>
+                            <div class="large-4 columns">
+                                <label><?=$content['year']?></label>
+                                <p><?=$content['value'] ?></p>
+                            </div>
+                        <?php endforeach?>
+                    </ul>
+                </div>
+            <?php  endforeach?>
+
+        <?php else: ?>
+            <p> There are no results in this rounds</p>
+        <?php endif;?>
+    </div>
+
     <?php
         if(!$round->has('completed')):
             echo $this->Form->postLink(__('Finish Round'), ['controller' => 'Rounds', 'action' => 'finish', $round->id], ['confirm' => __('Are you sure you want to finish round # {0}?', $round->step)]);
@@ -93,4 +115,5 @@
     <?php
         echo $this->Form->postLink(__('Create Results'), ['controller' => 'Rounds', 'action' => 'testws', $round->id], ['confirm' => __('Are you sure you generate round\'s # {0} results ?', $round->step)]);
     ?>
+
 </div>

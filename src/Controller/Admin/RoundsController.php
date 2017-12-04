@@ -46,10 +46,11 @@ class RoundsController extends AppController
         ]);
 
         $submitedState = $this->Rounds->getSumbitedState($id);
-        //$answers = $this->Rounds->getAnswers($id);
 
-        $this->set(compact('round', 'answers','submitedState'));
-        $this->set('_serialize', ['round','answers', 'submitedState']);
+        $results = $this->Rounds->getResults($id);
+
+        $this->set(compact('round','submitedState', 'results'));
+        $this->set('_serialize', ['round','submitedState', 'results']);
     }
 
     /**
@@ -188,6 +189,8 @@ class RoundsController extends AppController
         return $response;
     }
 
+
+    ## get Results from round by calling to R service and redirects to view
     public function testws($id = null)
     {
         $this->loadModel('Results');
@@ -197,7 +200,7 @@ class RoundsController extends AppController
         foreach($answers as $answer)
         {
             $indicators = $this->processData(json_encode($answer));
-
+            echo json_encode($indicators);
             foreach($indicators as $indicator )
             {
                 echo json_encode($indicator);
@@ -205,9 +208,9 @@ class RoundsController extends AppController
                 $this->Results->add($toSave);
             }
         }
-        $this->set(compact('response'));
-        $this->set('_serialize', ['response']);
+        $this->redirect(['controller' => 'rounds','action' => 'view',$id]);
     }
+
 
 
 

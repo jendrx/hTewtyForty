@@ -18,13 +18,14 @@ class ChartsController extends AppController
         {
             $params = $this->request->getQueryParams();
 
-            $scenario  = $params['scenario'];
-            $indicator = $params['indicator'];
+            $scenario   = $params['scenario'];
+            $indicator  = $params['indicator'];
+            $confidence = $params['confidence'];
 
             $ch = curl_init();
             curl_setopt_array($ch, [
                 CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_URL            => 'http://localhost:8000/indicatorData?scenario='.$params['scenario'].'&indicator='.$params['indicator']
+                CURLOPT_URL            => 'http://localhost:8000/indicatorData?scenario='.$params['scenario'].'&indicator='.$params['indicator'].'&confidence='.$params['confidence']
             ]);
             $response = json_decode(curl_exec($ch));
             curl_close($ch);

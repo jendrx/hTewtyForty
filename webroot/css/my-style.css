@@ -49,3 +49,46 @@
 .bobo{
     border: 10px dashed black;
 }
+
+.hero-section {
+    background-color: #ecfaff;
+    background-size: cover;
+    height: 60vh;
+    box-shadow: 1px 1px 5px  #888888;
+
+
+}
+
+.hero-section {
+    background-color: #ecfaff;
+    background-size: cover;
+    height: 60vh;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    box-shadow: 1px 1px 5px  #888888;
+
+
+}
+
+.welcome{
+    text-align: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+
+input:required {
+    box-shadow: 1px 1px 2px rgba(200, 0, 0, 0.85);
+}
+
+
+input:required:hover {
+    opacity: 10;
+}

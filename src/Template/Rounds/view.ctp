@@ -154,14 +154,16 @@
         return {cols:cols,rows:rows};
     }
 
-    function getIndicatorData(scenario,indicator) {
+    function getIndicatorData(scenario, indicator, confidence) {
         $.ajax({
             type: "GET",
             url: '/hTwentyForty/charts/getIndicatorData',
             dataType: 'json',
             data: {
                 'scenario' : scenario,
-                'indicator' : indicator.filename},
+                'indicator' : indicator.filename,
+                'confidence' : confidence},
+
             success: function (data)
             {
                 console.log(data.response);
@@ -215,8 +217,10 @@
             {
                 if(!data.response)
                 {
-                    $('#div-round-view-content').prepend('<div class="error message", onclick="this.classList.add(\'hidden\')"> Values inserted does not match</div>')
-                    $("#div-round-view-content").scrollTop($("#div-round-view-content")[0].scrollHeight);
+                    /*$('#div-round-view-content').prepend('<div class="error message", onclick="this.classList.add(\'hidden\')"> Values inserted does not match</div>')
+                    $("#div-round-view-content").scrollTop($("#div-round-view-content")[0].scrollHeight);*/
+
+                    alert("Os valores que introduziu não são consistentes!")
                 }else
                 {
                     $('#form-round').submit();
@@ -243,7 +247,7 @@
                 (function(cntr)
                 {
                     google.charts.setOnLoadCallback(function(){
-                        getIndicatorData(round.study.scenario,question.questions_indicators[cntr].indicator);
+                        getIndicatorData(round.study.scenario,question.questions_indicators[cntr].indicator,1);
                     });
 
 

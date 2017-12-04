@@ -63,6 +63,7 @@ class AnswersTable extends Table
 
         $validator
             ->numeric('value')
+            ->requirePresence('value')
             ->greaterThan('value',0)
             ->notEmpty('value');
 
@@ -84,7 +85,6 @@ class AnswersTable extends Table
         return $rules;
     }
 
-
     public function getStudy($id)
     {
         $rounds = TableRegistry::get('Rounds');
@@ -96,5 +96,43 @@ class AnswersTable extends Table
         })->first()->study_id;
 
         return $study_id;
+    }
+
+    public function addMany($data = null, $consistent = true, $user_id = null)
+    {
+        if(empty($user_id) || empty($data))
+            return false;
+
+        $answers = $this->newEntities($data);
+
+        foreach($answers as $answer)
+        {
+            $answer->user_id = $user_id;
+            $answer->consistent = $consistent;
+        }
+
+        if($this->saveMany($answers))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function addOne($data = null, $consistent = true, $user_id = null)
+    {
+        if (empty($user_id) || empty($data))
+            return false;
+
+        $answer = $this->newEntity($data);
+
+        $answer->user_id = $user_id;
+        $answer->consistent = $consistent;
+
+        if ($this->save($answer)) {
+            return true;
+        }
+
+        return false;
     }
 }

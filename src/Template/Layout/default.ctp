@@ -35,7 +35,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->css('my-style.css')?>
-    <?= $this->Html->script("https://code.jquery.com/jquery-3.2.1.min.js")?>
+    <?= $this->Html->script('jquery.min.js')?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -52,13 +52,12 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <div class="top-bar-section">
         <ul class="right">
             <li><?php echo $this->Html->link(__('Logout'),['controller' => 'Users', 'action' => 'logout']);?></li>
-
         </ul>
     </div>
 </nav>
 
-<div class="container clearfix">
 <?= $this->Flash->render() ?>
+<div class="container clearfix">
     <?= $this->fetch('content') ?>
 </div>
 <footer>

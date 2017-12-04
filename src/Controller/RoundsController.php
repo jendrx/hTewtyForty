@@ -10,14 +10,15 @@ namespace App\Controller;
 
 
 use Cake\Collection\Collection;
+use Cake\I18n\Time;
 
 class RoundsController extends AppController
 {
 
     public function view( $id = null )
     {
-        // find questions by get round by id and extract
-
+        $this->loadModel('Answers');
+        $answer = $this->Answers->newEntity();
         $round = $this->Rounds->get($id,['contain' => 'Studies']);
         $query = $this->Rounds->find('all',['conditions' => ['Rounds.id' => $id],'contain' => ['Studies','QuestionsIndicatorsYears.QuestionsIndicators.Questions']]);
         $questions = array_unique($query->extract('questions_indicators_years.{*}.questions_indicator.question')->toArray());
@@ -28,11 +29,9 @@ class RoundsController extends AppController
                 ->QuestionsIndicatorsYears
                 ->QuestionsIndicators->find('all',['conditions' => ['QuestionsIndicators.question_id' => $question['id']],
                     'contain' => ['Indicators','QuestionsIndicatorsYears' => ['Years','Rounds' => ['conditions' => ['Rounds.id' => $id]]]]]);
-
             $question['questions_indicators'] = $questionsIndicators;
         }
-
-        $this->set(compact('questions','round'));
-        $this->set('_serialize',[ 'questions', 'round']);
+        $this->set(compact('questions','round','answer'));
+        $this->set('_serialize',[ 'questions', 'round','answers']);
     }
 }
