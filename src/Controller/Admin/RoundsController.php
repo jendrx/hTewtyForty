@@ -190,6 +190,8 @@ class RoundsController extends AppController
     }
 
 
+
+
     ## get Results from round by calling to R service and redirects to view
     public function testws($id = null)
     {

@@ -18,9 +18,7 @@ class AnswersController extends AppController
         if($this->request->is('post'))
         {
             $data = $this->request->getData();
-            echo json_encode($data);
             $answers = $this->Answers->newEntities($data);
-
             $user_id = $this->Auth->user('id');
 
             foreach($answers as $answer)
@@ -28,16 +26,15 @@ class AnswersController extends AppController
                 $answer->user_id = $user_id;
                 $answer->consistent = true;
             }
-
             if($this->Answers->saveMany($answers))
             {
 
                 // get study for answers, set user study completed and get new study
-                /*$study_id = $this->Answers->getStudy($answers[0]['id']);
-                $this->Users->finishStudy($user_id,$study_id);
+                //$study_id = $this->Answers->getStudy($answers[0]['id']);
+                //$this->Users->finishStudy($user_id,$study_id);
 
                 $answered = true;
-                $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy', $answered]);*/
+                $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy', $answered]);
 
                 $this->Flash->success(__('Answer has been saved'));
             }
@@ -78,32 +75,34 @@ class AnswersController extends AppController
     public function validate()
     {
 
-        $error = 0.3;
-        $response = true;
-        $data = $this->request->getData();
-        $user_id = $this->Auth->user('id');
-        if(!$this->missingValues($data))
+        if($this->request->is('ajax'))
         {
+            $error = 0.3;
+            $response = true;
+            $data = $this->request->getData();
+            $user_id = $this->Auth->user('id');
+            if(!$this->missingValues($data))
+            {
+                for ($i = 0; $i < count($data) / 3; $i++) {
+                    $result = $data[$i]['value'] / $data[$i + 3]['value'];
+                    $max_threshold = $result + $error * $result;
+                    $min_threshold = $result - $error * $result;
+                    $ratio = $data[$i + 6]['value'];
 
-            for ($i = 0; $i < count($data) / 3; $i++) {
-                $result = $data[$i]['value'] / $data[$i + 3]['value'];
-                $max_threshold = $result + $error * $result;
-                $min_threshold = $result - $error * $result;
-                $ratio = $data[$i + 6]['value'];
-
-                // if result is not between delta error
-                if ($ratio > $max_threshold || $ratio < $min_threshold) {
-                    $response = false;
-                    break;
+                    // if result is not between delta error
+                    if ($ratio > $max_threshold || $ratio < $min_threshold) {
+                        $response = false;
+                        break;
+                    }
                 }
-            }
 
-            if($response === false)
-                $this->Answers->addMany($data,false,$user_id);
-        }
-        else
-        {
-            $response = false;
+                if($response === false)
+                    $this->Answers->addMany($data,false,$user_id);
+            }
+            else
+            {
+                $response = false;
+            }
         }
 
         $this->set(compact('response'));

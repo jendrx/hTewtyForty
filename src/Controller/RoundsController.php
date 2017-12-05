@@ -19,19 +19,20 @@ class RoundsController extends AppController
     {
         $this->loadModel('Answers');
         $answer = $this->Answers->newEntity();
-        $round = $this->Rounds->get($id,['contain' => 'Studies']);
-        $query = $this->Rounds->find('all',['conditions' => ['Rounds.id' => $id],'contain' => ['Studies','QuestionsIndicatorsYears.QuestionsIndicators.Questions']]);
-        $questions = array_unique($query->extract('questions_indicators_years.{*}.questions_indicator.question')->toArray());
-        foreach($questions as &$question)
-        {
+        $isFirst = $this->Rounds->isFirst($id);
 
-            $questionsIndicators = $this->Rounds
-                ->QuestionsIndicatorsYears
-                ->QuestionsIndicators->find('all',['conditions' => ['QuestionsIndicators.question_id' => $question['id']],
-                    'contain' => ['Indicators','QuestionsIndicatorsYears' => ['Years','Rounds' => ['conditions' => ['Rounds.id' => $id]]]]]);
-            $question['questions_indicators'] = $questionsIndicators;
+        $userAnswers = array();
+        if(!$isFirst)
+        {
+            $userAnswers = $this->Rounds->getUserAnswers($id, $this->Auth->user('id'));
         }
-        $this->set(compact('questions','round','answer'));
-        $this->set('_serialize',[ 'questions', 'round','answers']);
+        $roundValues = $this->Rounds->getRoundValues($id);
+        $questions = $this->Rounds->getQuestions($id);
+
+        $informativeIndicators = $this->Rounds->getInformativeIndicators($id);
+        $round = $this->Rounds->get($id,['contain' => 'Studies']);
+        $this->set(compact('answer','round', 'isFirst','questions', 'informativeIndicators', 'userAnswers', 'roundValues'));
+        $this->set('_serialize',['answer','round', 'isFirst', 'questions', 'informativeIndicators','userAnswers', 'roundValues']);
     }
 }
+

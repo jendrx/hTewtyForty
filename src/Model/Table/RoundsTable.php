@@ -7,6 +7,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\ORM\TableRegistry;
+
 
 /**
  * Rounds Model
@@ -172,4 +174,75 @@ class RoundsTable extends Table
     }
 
 
+    public function isFirst($id)
+    {
+        $round = $this->get($id);
+
+        return $round['step'] === 1;
+    }
+
+    public function getPreviousRound($id)
+    {
+        $current_round = $this->get($id);
+        $previous_round = $this->find('all', ['conditions' => ['step' => $current_round['step'] - 1]])->firstOrFail();
+        return $previous_round;
+    }
+
+    public function getUserAnswers($round_id, $user_id)
+    {
+        $answers = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) use($user_id) {
+            $ids = $q->select([ 'id' => $q->func()->max('id'), 'round_question_indicator_year_id'])->where(['consistent' => true, 'user_id' => $user_id])->group(['round_question_indicator_year_id','user_id'])->extract('id')->toArray();
+            return $this->RoundsQuestionsIndicatorsYears->Answers->find('all',['fields' => ['user_id','value','round_question_indicator_year_id']])->where(['Answers.id in ' => $ids]);
+        }, 'QuestionsIndicatorsYears' => ['Years' => ['fields' => ['id', 'description']], 'QuestionsIndicators.Indicators' => ['fields' => ['id','description','filename']]]]])
+            ->formatResults(function($q){
+                $indicators = array_unique($q->extract('questions_indicators_year.questions_indicator')->toArray());
+                $tmp = array();
+                foreach($indicators as &$indicator)
+                {
+                    $tmp = $q->match(['questions_indicators_year.questions_indicator.id' => $indicator->id])->extract(function($key){
+                        return array('Year' => $key['questions_indicators_year']['year']['description'], 'value' => $key['answers'][0]['value'],'round_question_indicator_year_id' => $key['answers'][0]['round_question_indicator_year_id']   );
+                    })->toArray();
+                    $indicator['user_values'] = array_values($tmp);
+                }
+                return array_values($indicators);
+
+            })
+            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->toArray();
+
+        return array_values($answers);
+    }
+
+    public function getRoundValues($round_id)
+    {
+        $answers = $this->RoundsQuestionsIndicatorsYears->find('all', ['contain' => ['QuestionsIndicatorsYears' => ['Years','QuestionsIndicators.Indicators']]])
+            ->formatResults(function($results) {
+                $indicators = array_unique($results->extract('questions_indicators_year.questions_indicator')->toArray());
+                $tmp = array();
+                foreach($indicators as &$indicator)
+                {
+                    $tmp = $results->match(['questions_indicators_year.questions_indicator.id' => $indicator->id])->extract(function($key){
+                    return array('Year' => $key['questions_indicators_year']['year']['description'], 'value' => $key['value'],  'round_question_indicator_year_id' => $key['id']);
+                })->toArray();
+                    $indicator['round_values'] = array_values($tmp);
+                }
+                return array_values($indicators);
+            })
+            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->toArray();
+
+        return array_values($answers);
+    }
+
+    public function getQuestions($round_id)
+    {
+        $questions = $this->find('all',['contain' => ['RoundsQuestionsIndicatorsYears.QuestionsIndicatorsYears.QuestionsIndicators.Questions']])->where(['id' => $round_id]);
+        return array_unique($questions->extract('rounds_questions_indicators_years.{*}.questions_indicators_year.questions_indicator.question')->first()->toArray());
+    }
+
+    public function getInformativeIndicators($round_id)
+    {
+        $questionsIndicatorsTable = TableRegistry::get('QuestionsIndicators');
+        $questions = $this->getQuestions($round_id);
+        $questionsIndicators = $questionsIndicatorsTable->find('all',['conditions' =>['question_id' => $questions['id'],'target' => false]])->contain('Indicators');
+        return $questionsIndicators;
+    }
 }
