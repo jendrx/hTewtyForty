@@ -280,6 +280,7 @@
 
 
          alert("a"); // HERE ADD ALERT
+        alert('a')
          for( index = 0, info_indicators_length = informative_indicators.length; index < info_indicators_length; index++)
          {
              (function(cntr)
