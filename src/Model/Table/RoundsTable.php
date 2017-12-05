@@ -186,7 +186,7 @@ class RoundsTable extends Table
                 {
                     $tmp = $q->match(['questions_indicators_year.questions_indicator.indicator.id' => $indicator->id])->extract(function($key)
                     {
-                        return array('question_indicator_year_id' => $key['question_indicator_year_id'], 'Year' => $key['questions_indicators_year']['year']['description']);
+                        return array('question_indicator_year_id' => $key['question_indicator_year_id'], 'Year' => $key['questions_indicators_year']['year']['description'], 'value' => $key['value']);
                     })->toArray();
                     $indicator['years'] = array_values($tmp);
                 }

@@ -46,19 +46,6 @@
             endforeach;
         endforeach;
         echo '</div></div>';
-/*
-
-
-        echo '<div class="row"><div class="large-12">';
-        echo '<h4> Informative Indicators </h4>';
-
-        foreach($response['questions_indicators'] as $questionIndicator):
-            if($questionIndicator['target'] === false):
-                echo '<div class="large-3 columns">';
-                echo $this->Form->control('Description',['value' => $questionIndicator->indicator->description, 'readonly']);
-                echo '</div>';
-            endif;
-        endforeach;*/
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

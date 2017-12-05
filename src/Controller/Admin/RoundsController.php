@@ -88,6 +88,9 @@ class RoundsController extends AppController
         $round = $this->Rounds->get($id, [
             'contain' => ['QuestionsIndicatorsYears']
         ]);
+
+        $indicatorsYears = $this->Rounds->getQuestionsIndicatorsYears($id);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $round = $this->Rounds->patchEntity($round, $this->request->getData());
             if ($this->Rounds->save($round)) {
@@ -97,10 +100,9 @@ class RoundsController extends AppController
             }
             $this->Flash->error(__('The round could not be saved. Please, try again.'));
         }
-        $studies = $this->Rounds->Studies->find('list', ['limit' => 200]);
-        $questionsIndicatorsYears = $this->Rounds->QuestionsIndicatorsYears->find('list', ['limit' => 200]);
-        $this->set(compact('round', 'studies', 'questionsIndicatorsYears'));
-        $this->set('_serialize', ['round']);
+
+        $this->set(compact('indicatorsYears','round', 'studies', 'questionsIndicatorsYears'));
+        $this->set('_serialize', ['indicatorsYears','round']);
     }
 
     /**
@@ -138,7 +140,6 @@ class RoundsController extends AppController
         }
         return $this->redirect(['controller' => 'Studies', 'action' => 'view',  $round->study_id]);
     }
-
 
     public function getAnswers( $id = null)
     {
@@ -188,9 +189,6 @@ class RoundsController extends AppController
             curl_close($ch);
         return $response;
     }
-
-
-
 
     ## get Results from round by calling to R service and redirects to view
     public function testws($id = null)

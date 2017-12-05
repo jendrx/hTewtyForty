@@ -23,12 +23,23 @@
 <div class="rounds form large-9 medium-8 columns content">
     <?= $this->Form->create($round) ?>
     <fieldset>
-        <legend><?= __('Edit Round') ?></legend>
+        <legend><?= __('Add Round') ?></legend>
         <?php
-            echo $this->Form->control('step');
-            echo $this->Form->control('completed');
-            echo $this->Form->control('study_id', ['options' => $studies, 'empty' => true]);
-            echo $this->Form->control('questions_indicators_years._ids', ['options' => $questionsIndicatorsYears]);
+        echo $this->Form->control('step', ['readonly']);
+        $index = 0;
+        echo '<div class="row"><div class="large-12">';
+        echo '<h4> Target Indicators</h4>';
+        foreach($indicatorsYears as $indicatorYears):
+            echo $this->Form->control('questions_indicators_years.'.$index.'.description',['value' => $indicatorYears->description, 'readonly']);
+            foreach($indicatorYears['years'] as $indicatorYear):
+                echo $this->Form->control('questions_indicators_years.'.$index.'.id',['value' => $indicatorYear['question_indicator_year_id']]);
+                echo '<div class="large-4 columns">';
+                echo $this->Form->control('questions_indicators_years.'.$index.'._joinData.value',['value' =>$indicatorYear['value']]);
+                echo '</div>';
+                $index = $index + 1;
+            endforeach;
+        endforeach;
+        echo '</div></div>';
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
