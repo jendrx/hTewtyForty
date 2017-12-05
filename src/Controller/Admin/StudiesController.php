@@ -134,7 +134,7 @@ class StudiesController extends AppController
     }
 
 
-    /*public function addRound($id = null)
+    public function addRound($id = null)
     {
         $lastRound = $this->Studies->getLastRound($id);
         if(!$lastRound->completed)
@@ -147,24 +147,26 @@ class StudiesController extends AppController
 
         $study_id = $id;
         $step = $lastRound->step + 1;
-        $roundMean = $this->Studies->Rounds->getRoundMean($lastRound->id);
 
+
+        $indicatorsYears = $this->Studies->Rounds->getQuestionsIndicatorsYears($lastRound->id);
 
         if($this->request->is('post'))
         {
             $data = $this->request->getData();
             $round = $this->Studies->Rounds->patchEntity($round,$data);
-
             if($this->Studies->Rounds->save($round))
             {
                 $this->Flash->success(__('The round has been saved'));
+
+                echo json_encode($round);
                 return $this->redirect(['action' => 'view', $id]);
             }
             $this->Flash->error(__('The round could not be saved'));
         }
 
 
-        $this->set(compact('roundMean','step','round','study_id'));
-        $this->set('_serialize',['roundMean','step','round','study_id']);
-    }*/
+        $this->set(compact('indicatorsYears','step','round','study_id'));
+        $this->set('_serialize',['indicatorsYears','step','round','study_id']);
+    }
 }

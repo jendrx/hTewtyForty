@@ -35,25 +35,18 @@
         $index = 0;
         echo '<div class="row"><div class="large-12">';
         echo '<h4> Target Indicators</h4>';
-        /*foreach($roundMean as $key => $value):
-            echo json_encode($key);
-
-            if($questionIndicator['target'] === true):
-
-                echo $this->Form->control('questions_indicators.'.$index.'.id',['value' => $questionIndicator->id]);
-                echo '<div class="large-3 columns">';
-                echo $this->Form->control('questions_indicators.'.$index.'.description',['value' => $questionIndicator->indicator->description, 'readonly']);
+        foreach($indicatorsYears as $indicatorYears):
+            echo $this->Form->control('questions_indicators_years.'.$index.'.description',['value' => $indicatorYears->description, 'readonly']);
+            foreach($indicatorYears['years'] as $indicatorYear):
+                echo $this->Form->control('questions_indicators_years.'.$index.'.id',['value' => $indicatorYear['question_indicator_year_id']]);
+                echo '<div class="large-4 columns">';
+                echo $this->Form->control('questions_indicators_years.'.$index.'._joinData.value',['value' => 0]);
                 echo '</div>';
-                echo '<div class="large-6 columns">';
-                echo $this->Form->control('questions_indicators.'.$index.'._joinData.default_value');
-                echo '</div>';
-            endif;
-
-            $index = $index + 1;
-
-        endforeach;*/
+                $index = $index + 1;
+            endforeach;
+        endforeach;
         echo '</div></div>';
-
+/*
 
 
         echo '<div class="row"><div class="large-12">';
@@ -65,7 +58,7 @@
                 echo $this->Form->control('Description',['value' => $questionIndicator->indicator->description, 'readonly']);
                 echo '</div>';
             endif;
-        endforeach;
+        endforeach;*/
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

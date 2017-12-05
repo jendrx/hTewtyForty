@@ -174,6 +174,27 @@ class RoundsTable extends Table
     }
 
 
+    public function getQuestionsIndicatorsYears($round_id)
+    {
+        $rqiy = $this->RoundsQuestionsIndicatorsYears
+            ->find('all',['contain' => ['QuestionsIndicatorsYears' => ['Years','QuestionsIndicators.Indicators']]])
+            ->formatResults(function($q) {
+                $indicators = array_unique($q->extract('questions_indicators_year.questions_indicator.indicator')->toArray());
+
+                $tmp = array();
+                foreach ($indicators as &$indicator)
+                {
+                    $tmp = $q->match(['questions_indicators_year.questions_indicator.indicator.id' => $indicator->id])->extract(function($key)
+                    {
+                        return array('question_indicator_year_id' => $key['question_indicator_year_id'], 'Year' => $key['questions_indicators_year']['year']['description']);
+                    })->toArray();
+                    $indicator['years'] = array_values($tmp);
+                }
+                return $indicators;
+            })
+            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->toArray();
+        return $rqiy;
+    }
     public function isFirst($id)
     {
         $round = $this->get($id);

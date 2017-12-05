@@ -60,7 +60,9 @@ class RoundsQuestionsIndicatorsYearsTable extends Table
 
         $validator
             ->numeric('value')
-            ->allowEmpty('value');
+            ->requirePresence('value')
+            ->notEmpty('value');
+
 
         return $validator;
     }
