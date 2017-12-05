@@ -279,6 +279,7 @@
          var informative_indicators = <?php echo json_encode($informativeIndicators);?>;
 
          alert("a")
+        alert("a")
          for( index = 0, info_indicators_length = informative_indicators.length; index < info_indicators_length; index++)
          {
              (function(cntr)
