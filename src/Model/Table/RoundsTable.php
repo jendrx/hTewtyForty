@@ -205,7 +205,7 @@ class RoundsTable extends Table
     public function getPreviousRound($id)
     {
         $current_round = $this->get($id);
-        $previous_round = $this->find('all', ['conditions' => ['step' => $current_round['step'] - 1]])->firstOrFail();
+        $previous_round = $this->find('all', ['conditions' => ['step' => $current_round['step'] - 1, 'study_id' => $current_round['study_id']]])->firstOrFail();
         return $previous_round;
     }
 

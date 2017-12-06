@@ -17,15 +17,22 @@ class RoundsController extends AppController
 
     public function view( $id = null )
     {
+        $user_id = $this->Auth->user('id');
+
+
+        if($this->Rounds->userHasAnswers($id,$user_id))
+            return $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy']);
+
         $this->loadModel('Answers');
         $answer = $this->Answers->newEntity();
         $isFirst = $this->Rounds->isFirst($id);
-
         $userAnswers = array();
         if(!$isFirst)
         {
-            $userAnswers = $this->Rounds->getUserAnswers($id, $this->Auth->user('id'));
+            $previous = $this->Rounds->getPreviousRound($id);
+            $userAnswers = $this->Rounds->getUserAnswers($previous['id'], $user_id);
         }
+
         $roundValues = $this->Rounds->getRoundValues($id);
         $questions = $this->Rounds->getQuestions($id);
 

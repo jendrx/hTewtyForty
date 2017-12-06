@@ -28,7 +28,7 @@ class AnswersController extends AppController
             }
             if($this->Answers->saveMany($answers))
             {
-                $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy']);
+                return $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy']);
             }
         }
 
