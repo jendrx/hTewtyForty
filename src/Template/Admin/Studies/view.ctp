@@ -65,9 +65,9 @@
             <?php endforeach; ?>
         </table>
             <?php
-                if(!$study->has('completed')):
+
                     echo $this->Html->link(__('Add Round'),['controller' => 'studies', 'action' => 'addRound', $study->id]);
-                endif;
+
             ?>
 
         <?php endif; ?>
