@@ -86,7 +86,8 @@
 
     <div class="related">
         <h4><?=__('Results') ?></h4>
-        <?php if(!isset($results)): ?>
+
+            <?php if(isset($results)):?>
             <?php foreach($results as $result): ?>
                 <div class="row">
                     <h5><?= $result->description?></h5>
@@ -99,10 +100,9 @@
                         <?php endforeach?>
                     </ul>
                 </div>
-            <?php  endforeach?>
-
-        <?php else: ?>
-            <p> There are no results in this rounds</p>
+            <?php  endforeach; ?>
+        <?php else:?>
+        <p> There are no results</p>
         <?php endif;?>
     </div>
 
@@ -112,8 +112,10 @@
         endif;
     ?>
 
+    <?php if(!isset($results)):?>
     <?php
         echo $this->Form->postLink(__('Create Results'), ['controller' => 'Rounds', 'action' => 'testws', $round->id], ['confirm' => __('Are you sure you generate round\'s # {0} results ?', $round->step)]);
     ?>
+    <?php endif?>
 
 </div>

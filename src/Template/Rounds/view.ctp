@@ -12,6 +12,7 @@
         <!--question div-->
         <div class="row">
 
+            <?php if($isFirst):?>
             <!-- chart informative row -->
             <div class="row">
                 <?php foreach($informativeIndicators as $informativeIndicator):?>
@@ -23,7 +24,7 @@
 
                 <!-- end chart informative row -->
             </div>
-
+            <?php endif;?>
             <?php echo $this->Form->create($answer,[ 'url' => ['controller' => 'answers', 'action' => 'add'],'id' => 'form-round']); ?>
             <?php $index = 0; ?>
             <?php if(empty($userAnswers)): ?>
@@ -277,35 +278,61 @@
          var user_answers = <?php echo json_encode($userAnswers);?>;
          var round_values = <?php echo json_encode($roundValues);?>;
          var informative_indicators = <?php echo json_encode($informativeIndicators);?>;
+         var isFirst = <?php echo json_encode($isFirst);?>;
 
-         for( index = 0, info_indicators_length = informative_indicators.length; index < info_indicators_length; index++)
+         if(isFirst)
          {
-             (function(cntr)
+             for( index = 0, info_indicators_length = informative_indicators.length; index < info_indicators_length; index++)
              {
-                 var current_indicator = informative_indicators[cntr]
-                 google.charts.setOnLoadCallback(function(){
-                     getIndicatorData(round.study.scenario,current_indicator.indicator.filename,0,function(data){
-                         drawChart(parseChartData(data),'info-chart-'+current_indicator.indicator.filename,current_indicator.title,current_indicator.label)});
-                 });
-             })(index);
+                 (function(cntr)
+                 {
+                     var current_indicator = informative_indicators[cntr]
+                     google.charts.setOnLoadCallback(function(){
+                         getIndicatorData(round.study.scenario,current_indicator.indicator.filename,0,function(data){
+                             drawChart(parseChartData(data),'info-chart-'+current_indicator.indicator.filename,current_indicator.title,current_indicator.label)});
+                     });
+                 })(index);
+             }
+
+             for( index = 0, target_indicators_length = round_values.length; index < target_indicators_length; index++)
+             {
+                 (function(cntr)
+                 {
+                     var current_indicator = round_values[cntr]
+                     console.log(current_indicator.round_values);
+                     google.charts.setOnLoadCallback(function(){
+                         getIndicatorData(round.study.scenario,current_indicator.indicator.filename,1,function(data){
+                             var parsed = parseChartData(data)
+                             drawChart(parsed,'target-chart-'+current_indicator.indicator.filename,current_indicator.title,current_indicator.label)});
+
+                     });
+                 })(index);
+             }
+
          }
 
-         if(true)
+         else(!isFirst)
          {
-            for( index = 0, target_indicators_length = round_values.length; index < target_indicators_length; index++)
-            {
-                (function(cntr)
-                {
-                    var current_indicator = round_values[cntr]
-                    console.log(current_indicator.round_values);
-                    google.charts.setOnLoadCallback(function(){
-                    getIndicatorData(round.study.scenario,current_indicator.indicator.filename,1,function(data){
-                    var parsed = parseChartData(data)
-                    drawChart(parsed,'target-chart-'+current_indicator.indicator.filename,current_indicator.title,current_indicator.label)});
+             for( index = 0, target_indicators_length = user_answers.length; index < target_indicators_length; index++)
+             {
+                 (function(cntr)
+                 {
+                     var current_indicator = user_answers[cntr]
 
-                    });
-                })(index);
-            }
+                     var user_data = current_indicator.user_values.map(function(obj){
+                         delete obj.round_question_indicator_year_id
+                         delete obj.user_id
+                         return obj
+                     });
+                        console.log(user_data)
+                     google.charts.setOnLoadCallback(function(){
+                         smooth(round.study.scenario,current_indicator.indicator.filename,1,user_data,function(data){
+                             var parsed = parseChartData(mergeData(data,user_data,'My'))
+                             drawChart(parsed,'target-chart-'+current_indicator.indicator.filename,current_indicator.title,current_indicator.label)});
+
+                     });
+                 })(index);
+             }
          }
 
         // submit function

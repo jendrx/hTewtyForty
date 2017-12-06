@@ -173,6 +173,20 @@ class RoundsTable extends Table
 
     }
 
+
+    public function getUsersAnswersv2($round_id,$user_id)
+    {
+
+    }
+
+    public function getRoundsQuestionsIndicatorsYears($round_id)
+    {
+        $rqiy = $this->RoundsQuestionsIndicatorsYears
+            ->find('all',['contain' => ['QuestionsIndicatorsYears' => ['Years','QuestionsIndicators.Indicators']]])->order('RoundsQuestionsIndicatorsYears.id')
+            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->toArray();
+
+        return $rqiy;
+    }
     public function getQuestionsIndicatorsYears($round_id)
     {
         $rqiy = $this->RoundsQuestionsIndicatorsYears
@@ -209,7 +223,7 @@ class RoundsTable extends Table
         return $previous_round;
     }
 
-    public function getUserAnswers($round_id, $user_id)
+/*    public function getUserAnswers($round_id, $user_id)
     {
         $answers = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) use($user_id) {
             $ids = $q->select([ 'id' => $q->func()->max('id'), 'round_question_indicator_year_id'])->where(['consistent' => true, 'user_id' => $user_id])->group(['round_question_indicator_year_id','user_id'])->extract('id')->toArray();
@@ -231,19 +245,67 @@ class RoundsTable extends Table
             ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->toArray();
 
         return array_values($answers);
+    }*/
+
+
+    public function getUserAnswersv2($round_id, $user_id)
+    {
+        $answers = $this->RoundsQuestionsIndicatorsYears->find('all',['contain' => ['Answers' => function($q) use($user_id) {
+            $ids = $q->select([ 'id' => $q->func()->max('id'), 'round_question_indicator_year_id'])->where(['consistent' => true, 'user_id' => $user_id])->group(['round_question_indicator_year_id','user_id'])->extract('id')->toArray();
+
+            return $this->RoundsQuestionsIndicatorsYears->Answers->find('all',['fields' => ['user_id','value','round_question_indicator_year_id']])->where(['Answers.id in ' => $ids]);
+        }, 'QuestionsIndicatorsYears' => ['Years' => ['fields' => ['id', 'description']], 'QuestionsIndicators.Indicators' => ['fields' => ['id','description','filename']]]]])
+            ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->toArray();
+        return array_values($answers);
+    }
+
+    public function merge($rqiy,$answers)
+    {
+        $cRqiy = new Collection($rqiy);
+        $cAnswers = new Collection($answers);
+        $rounds_questions_indicators_years = $cRqiy->extract(function($key)
+        {
+            return array('round_question_indicator_year_id' => $key['id'], 'questions_indicators_year' => $key['questions_indicators_year']);
+        });
+
+        $tmp = array();
+        foreach($rounds_questions_indicators_years as $rounds_questions_indicators_year)
+        {
+            $round_question_indicator_year_id = $rounds_questions_indicators_year['round_question_indicator_year_id'];
+            $answers = array_values($cAnswers->match(['questions_indicators_year.id' => $rounds_questions_indicators_year['questions_indicators_year']['id']])->extract(function($key) use($round_question_indicator_year_id) {
+               return array('value' => $key['answers'][0]['value'], 'user_id' => $key['answers'][0]['user_id'], 'round_question_indicator_year_id' => $round_question_indicator_year_id);
+            })->toArray());
+
+            array_push($tmp, ['questions_indicators_year' => $rounds_questions_indicators_year['questions_indicators_year'], 'answer' => $answers[0]]);
+        }
+
+        //return $tmp;
+        $cTmp = new Collection($tmp);
+        $indicators = array_unique($cTmp->extract('questions_indicators_year.questions_indicator')->toArray());
+
+        foreach($indicators as &$indicator)
+        {
+            $indicator['user_values'] =
+            array_values($cTmp->match(['questions_indicators_year.questions_indicator.id' => $indicator['id']])->extract(function($key)
+            {
+                return array('Year' => $key['questions_indicators_year']['year']['description'],'value' =>$key['answer']['value'],'user_id' =>$key['answer']['user_id'],'round_question_indicator_year_id' =>$key['answer']['round_question_indicator_year_id']);
+            })->toArray());
+        }
+
+        return array_values($indicators);
     }
 
     public function getRoundValues($round_id)
     {
-        $answers = $this->RoundsQuestionsIndicatorsYears->find('all', ['contain' => ['QuestionsIndicatorsYears' => ['Years','QuestionsIndicators.Indicators']]])
+        $answers = $this->RoundsQuestionsIndicatorsYears->find('all', ['contain' => ['QuestionsIndicatorsYears' => ['Years','QuestionsIndicators.Indicators']]])->order(['RoundsQuestionsIndicatorsYears.id' => 'ASC'])
             ->formatResults(function($results) {
                 $indicators = array_unique($results->extract('questions_indicators_year.questions_indicator')->toArray());
                 $tmp = array();
                 foreach($indicators as &$indicator)
                 {
-                    $tmp = $results->match(['questions_indicators_year.questions_indicator.id' => $indicator->id])->extract(function($key){
+                    $tmp = array_values($results->match(['questions_indicators_year.questions_indicator.id' => $indicator->id])->extract(function($key){
                     return array('Year' => $key['questions_indicators_year']['year']['description'], 'value' => $key['value'],  'round_question_indicator_year_id' => $key['id']);
-                })->toArray();
+                })->toArray());
                     $indicator['round_values'] = array_values($tmp);
                 }
                 return array_values($indicators);

@@ -20,8 +20,8 @@ class RoundsController extends AppController
         $user_id = $this->Auth->user('id');
 
 
-        if($this->Rounds->userHasAnswers($id,$user_id))
-            return $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy']);
+        /*if($this->Rounds->userHasAnswers($id,$user_id))
+            return $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy']);*/
 
         $this->loadModel('Answers');
         $answer = $this->Answers->newEntity();
@@ -30,7 +30,10 @@ class RoundsController extends AppController
         if(!$isFirst)
         {
             $previous = $this->Rounds->getPreviousRound($id);
-            $userAnswers = $this->Rounds->getUserAnswers($previous['id'], $user_id);
+            $userAnswersv2 = $this->Rounds->getUserAnswersv2($previous['id'], $user_id);
+            $rqiy = $this->Rounds->getRoundsQuestionsIndicatorsYears($id);
+
+            $userAnswers = $this->Rounds->merge($rqiy,$userAnswersv2);
         }
 
         $roundValues = $this->Rounds->getRoundValues($id);
