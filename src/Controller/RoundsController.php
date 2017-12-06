@@ -39,10 +39,10 @@ class RoundsController extends AppController
         $roundValues = $this->Rounds->getRoundValues($id);
         $questions = $this->Rounds->getQuestions($id);
 
-        $informativeIndicators = $this->Rounds->getInformativeIndicators($id);
+        //$informativeIndicators = $this->Rounds->getInformativeIndicators($id);
         $round = $this->Rounds->get($id,['contain' => 'Studies']);
-        $this->set(compact('answer','round', 'isFirst','questions', 'informativeIndicators', 'userAnswers', 'roundValues'));
-        $this->set('_serialize',['answer','round', 'isFirst', 'questions', 'informativeIndicators','userAnswers', 'roundValues']);
+        $this->set(compact('answer','round', 'isFirst','questions', 'userAnswers', 'roundValues'));
+        $this->set('_serialize',['answer','round', 'isFirst', 'questions','userAnswers', 'roundValues']);
     }
 }
 

@@ -11,21 +11,6 @@
     <div class="large-12 columns round-content">
         <!--question div-->
         <div class="row">
-
-            <?php if($isFirst):?>
-            <!-- chart informative row -->
-            <div class="row">
-                <?php foreach($informativeIndicators as $informativeIndicator):?>
-                <div class="large-6 columns">
-                    <chart-div>
-                    <div id="info-chart-<?= $informativeIndicator['indicator']['filename']?>"></div>
-                </div>
-                <?php endforeach;?>
-
-                <!-- end chart informative row -->
-            </div>
-            <?php endif;?>
-
             <div class="row ">
                 <div class="large-10 large-centered columns panel">
                     <p> Considere os seguintes cenários caracterizados por uma convergência estável, decrescente e crescente do número de médicos (por mil hab.), enfermeiros (por mil hab.) e respetiva evolução do rácio enfermeiros por médico em Portugal.
@@ -285,12 +270,12 @@
          var questions = <?php echo json_encode($questions);?>;
          var user_answers = <?php echo json_encode($userAnswers);?>;
          var round_values = <?php echo json_encode($roundValues);?>;
-         var informative_indicators = <?php echo json_encode($informativeIndicators);?>;
+         //var informative_indicators = <?php echo json_encode($informativeIndicators);?>;
          var isFirst = <?php echo json_encode($isFirst);?>;
 
          if(isFirst)
          {
-             for( index = 0, info_indicators_length = informative_indicators.length; index < info_indicators_length; index++)
+             /*for( index = 0, info_indicators_length = informative_indicators.length; index < info_indicators_length; index++)
              {
                  (function(cntr)
                  {
@@ -300,7 +285,7 @@
                              drawChart(parseChartData(data),'info-chart-'+current_indicator.indicator.filename,current_indicator.title,current_indicator.label)});
                      });
                  })(index);
-             }
+             }*/
 
              for( index = 0, target_indicators_length = round_values.length; index < target_indicators_length; index++)
              {
