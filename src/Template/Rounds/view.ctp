@@ -52,7 +52,7 @@
                                         <div class="small-5 columns">
                                             <label for="right-label" class="right" id = "<?='input-'.$roundValue['indicator']['filename'].'-'.$yearValue['Year']?>"><?=$yearValue['Year'] ?></label>
                                         </div>
-                                        <div class="small-7 columns">
+                                        <div class="small-7 columns" lang="en-US">
                                             <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$roundValue['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0])?>
                                         </div>
                                     </div>
@@ -75,7 +75,7 @@
                                         <div class="small-5 columns">
                                             <label for="right-label" class="right" id = "<?='input-'.$roundValue['indicator']['filename'].'-'.$yearValue['Year']?>"><?=$yearValue['Year'] ?></label>
                                         </div>
-                                        <div class="small-7 columns">
+                                        <div class="small-7 columns " lang="en-US">
                                             <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$roundValue['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0])?>
                                         </div>
                                     </div>
@@ -100,7 +100,7 @@
                                         <div class="small-5 columns">
                                             <label for="right-label" class="right" id = "<?='input-'.$userAnswer['indicator']['filename'].'-'.$yearValue['Year']?>"><?=$yearValue['Year'] ?></label>
                                         </div>
-                                        <div class="small-7 columns">
+                                        <div class="small-7 columns" lang="en-US">
                                             <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$userAnswer['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0])?>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
                                         <div class="small-5 columns">
                                             <label for="right-label" class="right" id = "<?='input-'.$userAnswer['indicator']['filename'].'-'.$yearValue['Year']?>"><?=$yearValue['Year'] ?></label>
                                         </div>
-                                        <div class="small-7 columns">
+                                        <div class="small-7 columns" lang="en-US">
                                             <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$userAnswer['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0])?>
                                         </div>
                                     </div>
