@@ -16,7 +16,7 @@
                     <p> Considere os seguintes cenários caracterizados por uma convergência estável, decrescente e crescente do número de médicos (por mil hab.), enfermeiros (por mil hab.) e respetiva evolução do rácio enfermeiros por médico em Portugal.
                         <br>
                         <br>
-                        Refira, para cada ano assinalado (2020, 2030 e 2040), o número de médicos por mil hab., enfermeiros (por mil hab.) e rácio de enfermeiros por médico. Note que os valores a indicar podem estar fora do intervalo exposto em cada um dos gráficos.</p>
+                        Refira, para cada ano assinalado (2020, 2030 e 2040), o número de médicos (por mil hab.), enfermeiros (por mil hab.) e rácio de enfermeiros por médico. Note que os valores a indicar podem estar fora do intervalo exposto em cada um dos gráficos.</p>
                 </div>
 
             </div>
@@ -209,7 +209,10 @@
                 title: chart1_main_title,
                 series: [{'color': '#d8b45d'},{'color':"#dd5d32"},{'color': '#1e675a'}],
                 vAxis: {title: chart1_vaxis_title},
-                hAxis: { format:''}
+                hAxis: { format:''},
+                legend: {
+                    position: 'top'
+                }
             };
         }
 
