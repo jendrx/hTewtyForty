@@ -173,7 +173,6 @@ class RoundsTable extends Table
 
     }
 
-
     public function getQuestionsIndicatorsYears($round_id)
     {
         $rqiy = $this->RoundsQuestionsIndicatorsYears
@@ -195,6 +194,7 @@ class RoundsTable extends Table
             ->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id])->toArray();
         return $rqiy;
     }
+
     public function isFirst($id)
     {
         $round = $this->get($id);
@@ -265,5 +265,16 @@ class RoundsTable extends Table
         $questions = $this->getQuestions($round_id);
         $questionsIndicators = $questionsIndicatorsTable->find('all',['conditions' =>['question_id' => $questions['id'],'target' => false]])->contain('Indicators');
         return $questionsIndicators;
+    }
+
+
+    public function userHasAnswers($round_id, $user_id)
+    {
+        $answers = $this->RoundsQuestionsIndicatorsYears->Answers->find('all')->matching('RoundsQuestionsIndicatorsYears',function($q) use($round_id)
+        {
+            return $q->where(['RoundsQuestionsIndicatorsYears.round_id' => $round_id]);
+        })->where(['Answers.user_id' => $user_id]);
+
+        return !$answers->isEmpty();
     }
 }

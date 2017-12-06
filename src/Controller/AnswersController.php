@@ -28,19 +28,7 @@ class AnswersController extends AppController
             }
             if($this->Answers->saveMany($answers))
             {
-
-                // get study for answers, set user study completed and get new study
-                //$study_id = $this->Answers->getStudy($answers[0]['id']);
-                //$this->Users->finishStudy($user_id,$study_id);
-
-                $answered = true;
-                $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy', $answered]);
-
-                $this->Flash->success(__('Answer has been saved'));
-            }
-            else
-            {
-                $this->Flash->error(__('Answer has not been saved'));
+                $this->redirect(['controller' => 'users', 'action' => 'getActiveStudy']);
             }
         }
 
