@@ -137,11 +137,11 @@ class StudiesController extends AppController
     public function addRound($id = null)
     {
         $lastRound = $this->Studies->getLastRound($id);
-        if(!$lastRound->completed)
+        /*if(!$lastRound->completed)
         {
             $this->Flash->error(__('Last Round has not been finished'));
             return $this->redirect(['action' => 'view', $lastRound->study_id]);
-        }
+        }*/
 
         $round = $this->Studies->Rounds->newEntity();
 
