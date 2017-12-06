@@ -12,11 +12,17 @@
         <!--question div-->
         <div class="row">
             <div class="row ">
+
                 <div class="large-10 large-centered columns panel">
+                    <?php if($isFirst): ?>
                     <p> Considere os seguintes cenários caracterizados por uma convergência estável, decrescente e crescente do número de médicos (por mil hab.), enfermeiros (por mil hab.) e respetiva evolução do rácio enfermeiros por médico em Portugal.
                         <br>
                         <br>
                         Refira, para cada ano assinalado (2020, 2030 e 2040), o número de médicos (por mil hab.), enfermeiros (por mil hab.) e rácio de enfermeiros por médico. Note que os valores a indicar podem estar fora do intervalo exposto em cada um dos gráficos.</p>
+                    <?php else:?>
+                        <p> Perante o conhecimento das respostas de todos os peritos, reveja a(s) sua(s) resposta(s), se assim entender, de forma a concluir a segunda ronda do questionário.</p>
+
+                    <?php endif; ?>
                 </div>
 
             </div>
@@ -132,7 +138,11 @@
     google.charts.load('current', {'packages':['corechart']});
 
     function mergeData(dataOne,dataTwo,key) {
+
+        console.log(dataOne)
+        console.log(dataTwo)
         var merged = [];
+        var size
         if(dataOne.length > dataTwo.length)
             size = dataOne.length
 
@@ -337,7 +347,7 @@
                      });
                      google.charts.setOnLoadCallback(function(){
                          smooth(round.study.scenario,current_indicator.indicator.filename,1,round_data,function(data){
-                             var parsed = parseChartData(mergeData(data,user_data,'My'))
+                             var parsed = parseChartData(mergeData(data,user_data,'Resposta dada'))
                              drawChart(parsed,'target-chart-'+current_indicator.indicator.filename,current_indicator.title,current_indicator.label)});
 
                      });
