@@ -318,15 +318,29 @@
                  (function(cntr)
                  {
                      var current_indicator = user_answers[cntr]
+                     var current_round_indicator = round_values[cntr]
 
+                     console.log('round_values')
+                     console.log(current_round_indicator.round_values)
+                     console.log('user_values')
+                     console.log(current_indicator.user_values)
                      var user_data = current_indicator.user_values.map(function(obj){
                          delete obj.round_question_indicator_year_id
                          delete obj.user_id
                          return obj
                      });
-                        console.log(user_data)
+
+                     console.log('round_values')
+                     console.log(current_round_indicator.round_values)
+                     console.log('user_values')
+                     console.log(current_indicator.user_values)
+
+                     var round_data = current_round_indicator.round_values.map(function(obj){
+                         delete obj.round_question_indicator_year_id
+                         return obj
+                     });
                      google.charts.setOnLoadCallback(function(){
-                         smooth(round.study.scenario,current_indicator.indicator.filename,1,user_data,function(data){
+                         smooth(round.study.scenario,current_indicator.indicator.filename,1,round_data,function(data){
                              var parsed = parseChartData(mergeData(data,user_data,'My'))
                              drawChart(parsed,'target-chart-'+current_indicator.indicator.filename,current_indicator.title,current_indicator.label)});
 
