@@ -150,6 +150,9 @@ class RoundsTable extends Table
             return $indicators;
         })->where(['round_id' => $round_id]);
 
+        if($results->isEmpty())
+            return null;
+
         return $results;
     }
 

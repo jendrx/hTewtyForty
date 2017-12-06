@@ -33,8 +33,8 @@ class UsersController extends AppController
 
             if($this->Users->save($user))
             {
-                $this->Flash->success(_('User has been saved'));
-                return $this->redirect(['action' => 'login']);
+                $this->Flash->success(__('User has been saved'));
+                return $this->redirect(['controller' => 'users','action' => 'login']);
             }
             $this->Flash->error(__('Unable to register the user'));
         }
