@@ -270,7 +270,7 @@
          var questions = <?php echo json_encode($questions);?>;
          var user_answers = <?php echo json_encode($userAnswers);?>;
          var round_values = <?php echo json_encode($roundValues);?>;
-         //var informative_indicators = <?php echo json_encode($informativeIndicators);?>;
+
          var isFirst = <?php echo json_encode($isFirst);?>;
 
          if(isFirst)
