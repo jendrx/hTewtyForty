@@ -26,7 +26,7 @@
         <legend><?= __('Edit Study') ?></legend>
         <?php
             echo $this->Form->control('description');
-            echo $this->Form->control('completed');
+            //echo $this->Form->control('completed');
             echo $this->Form->control('category');
             echo $this->Form->control('scenario');
             echo $this->Form->control('users._ids', ['options' => $users]);
