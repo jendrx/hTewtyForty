@@ -31,7 +31,7 @@ class StudiesController extends AppController
             $isFirst = $this->Studies->Rounds->isFirst($round['id']);
             if($isFirst)
             {
-                $response = "Obrigada pela sua resposta. Aguarde o início da 2ª ronda!";
+                $response = "Obrigada pela sua resposta. Aguarde o início da segunda ronda!";
             }
             else {
                 $response = 'Obrigada pela sua colaboração';
