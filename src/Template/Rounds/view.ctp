@@ -44,7 +44,7 @@
                                             <label for="right-label" class="right" id = "<?='input-'.$roundValue['indicator']['filename'].'-'.$yearValue['Year']?>"><?=$yearValue['Year'] ?></label>
                                         </div>
                                         <div class="small-7 columns" lang="en-US">
-                                            <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$roundValue['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0])?>
+                                            <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$roundValue['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0, 'step' => 0.1])?>
                                         </div>
                                     </div>
                                     <?php $index = $index + 1; ?>
@@ -67,7 +67,7 @@
                                             <label for="right-label" class="right" id = "<?='input-'.$roundValue['indicator']['filename'].'-'.$yearValue['Year']?>"><?=$yearValue['Year'] ?></label>
                                         </div>
                                         <div class="small-7 columns " lang="en-US">
-                                            <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$roundValue['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0])?>
+                                            <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$roundValue['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0, 'step' => 0.1])?>
                                         </div>
                                     </div>
 
@@ -92,7 +92,7 @@
                                             <label for="right-label" class="right" id = "<?='input-'.$userAnswer['indicator']['filename'].'-'.$yearValue['Year']?>"><?=$yearValue['Year'] ?></label>
                                         </div>
                                         <div class="small-7 columns" lang="en-US">
-                                            <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$userAnswer['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0])?>
+                                            <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$userAnswer['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0, 'step' => 0.1])?>
                                         </div>
                                     </div>
 
@@ -116,7 +116,7 @@
                                             <label for="right-label" class="right" id = "<?='input-'.$userAnswer['indicator']['filename'].'-'.$yearValue['Year']?>"><?=$yearValue['Year'] ?></label>
                                         </div>
                                         <div class="small-7 columns" lang="en-US">
-                                            <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$userAnswer['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0])?>
+                                            <?= $this->Form->control($index.'.value', ['value' =>$yearValue['value'] ,'type' => 'number', 'label' => false , 'id'=> 'input-'.$userAnswer['indicator']['filename'].'-'.$yearValue['Year'], 'min' => 0, 'step' => 0.1])?>
                                         </div>
                                     </div>
                                     <?php $index = $index + 1; ?>
